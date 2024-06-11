@@ -1,0 +1,233 @@
+<style>
+    /* Style the dropdown container */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Style the dropdown button */
+    .dropdown .btn {
+        background-color: transparent;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+    }
+
+    /* Style the dropdown menu */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        min-width: 160px;
+        z-index: 1;
+    }
+
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    /* Style the dropdown items */
+    .dropdown-menu .dropdown-item {
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #333;
+        display: block;
+    }
+
+    /* Style the dropdown items on hover */
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #f2f2f2;
+    }
+</style>
+
+
+
+<header class="header-area header-style-1 header-height-2">
+    <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+        <div class="container">
+            <div class="header-wrap">
+                <div class="logo logo-width-1">
+                    <a href="/"><img src="/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                </div>
+                <div class="header-right">
+                    <div class="search-style-2">
+                        <form action="#">
+                            {{!-- <select class="select-active">
+                                <option>All Categories</option>
+                            </select> --}}
+                             <input type="text" onchange="searchProducts()" id="searchField" placeholder="Search for items..." name="search-product">
+                        </form>
+                    </div>
+                    <div class="header-action-right">
+                        <div class="header-action-2">
+
+                            <div class="wrap-icon-header flex-w flex-r-m">
+
+                                <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+
+
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            {{#if userData}}
+                                            {{userData.name}}
+                                            {{else}}
+                                            Account
+                                            {{/if}}
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                            {{#if userData}}
+                                            <!-- Add an id to the logout link -->
+                                            <a id="logout-link" class="dropdown-item" href="/logout">Logout</a>
+
+                                            {{else}}
+                                            <a class="dropdown-item" href="/login">Login</a>
+
+                                            {{/if}}
+                                            </a>
+                                            {{#if userData}}
+                                            <a class="dropdown-item" href="/profile">My profile</a>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+
+                                {{#if userData}}
+                                <a href="/cart?id={{userData._id}}"
+                                    class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+                                    data-notify="{{userData.cart.length}}">
+                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                </a>
+
+                                <a href="/wishlist?id={{userData._id}}"
+                                    class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+                                    data-notify="{{userData.wishList.length}}">
+                                    <i class="zmdi zmdi-favorite-outline"></i>
+                                </a>
+                                {{else}}
+                                <a href="/cart?id={{userData._id}}"
+                                    class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 ">
+                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                </a>
+
+                                <a href="/wishlist?id={{userData._id}}"
+                                    class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 ">
+                                    <i class="zmdi zmdi-favorite-outline"></i>
+                                </a>
+                                {{/if}}
+                            </div>
+
+
+
+                            {{#if userData}}
+                            <div class="header-action-icon-2">
+                                <a href="/wishlist?id={{userData._id}}">
+                                    <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg" />
+                                    <span class="pro-count blue">{{userData.wishList.length}}</span>
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon"  href="/cart?id={{userData._id}}">
+                                    <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg" />
+                                    <span class="pro-count blue">{{userData.cart.length}}</span>
+                                </a>
+                            </div>
+                            {{else}}
+                                                        <div class="header-action-icon-2">
+                                <a href="/wishlist?id={{userData._id}}">
+                                    <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg" />
+                                    <span class="pro-count blue">0</span>
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon"  href="/cart?id={{userData._id}}">
+                                    <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg" />
+                                    <span class="pro-count blue">0</span>
+                                </a>
+                            </div>
+                            {{/if}}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="container">
+            <div class="header-wrap header-space-between position-relative">
+                <div class="logo logo-width-1 d-block d-lg-none">
+                    <a href="index.html"><img src="/assets/imgs/theme/logo.svg" alt="logo" /></a>
+                </div>
+                <div class="header-nav d-none d-lg-flex">
+                    <div class="main-categori-wrap d-none d-lg-block">
+                        <a class="categori-button-active" href="#">
+                            <span class="fi-rs-apps"></span>
+                            Browse Categories
+                        </a>
+
+                    </div>
+                    <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
+                        <nav>
+                            <ul>
+                                <li><a class="active" href="/">Home
+                                </li>
+                                <li>
+                                    <a href="#">About</a>
+                                </li>
+                                <li><a href="/product">Shop
+                                </li>
+                                <li class="position-static"><a href="#">Mega menu
+                                </li>
+                                <li><a href="#">Blog
+                                </li>
+                                <li><a href="#">Pages </a>
+                                </li>
+                                <li>
+                                    <a href="#">Contact</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="hotline d-none d-lg-block">
+                    <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the logout link
+        var logoutLink = document.getElementById("logout-link");
+
+        // Add a click event listener to the logout link
+        logoutLink.addEventListener("click", function (event) {
+            // Prevent the default action of the link
+            event.preventDefault();
+
+            // Display a confirmation dialog
+            var confirmation = confirm("Are you sure you want to logout?");
+
+            // If the user confirms, proceed with logout
+            if (confirmation) {
+                // Redirect the user to the logout URL
+                window.location.href = logoutLink.getAttribute("href");
+            }
+        });
+    });
+
+
+</script>
