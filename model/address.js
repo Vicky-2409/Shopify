@@ -46,6 +46,8 @@ const addressSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     }
+},{
+    timestamps: true
 })
 
 

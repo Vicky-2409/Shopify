@@ -173,8 +173,13 @@
 		const totalPrice = async (id,act,stock)=>{
 			const elem= document.getElementById(id)
 			if( act == 'inc')
-			{{!-- stock > --}}
-				 elem.value ? elem.value=Number(elem.value)+1 : '' 
+            if (elem.value && Number(elem.value) < stock) {
+                elem.value = Number(elem.value) + 1;
+            } else {
+                // Display an alert if the stock limit is reached
+                alertify.set('notifier', 'position', 'bottom-center');
+                alertify.success('out of stock..!!');
+            }
 			else if( act == 'dec' )
 				elem.value > 1 ? elem.value=Number(elem.value)-1 :''
 			

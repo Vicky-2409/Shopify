@@ -5,6 +5,7 @@ const pdfkit  = require('pdfkit')
 const fs      = require('fs')
 const helper  = require('../../helpers/user.helper')
 const User    = require('../../model/userModel')
+const Product = require('../../model/productModel')
 
 const path = require('path');
 const easyinvoice = require('easyinvoice');
@@ -174,13 +175,27 @@ const filterOrders = async (req, res) => {
         const userId   =  userData._id
         
         const { updateWallet, payMethod } = req.body
-        console.log(updateWallet)
+
+
+        let canceledOrder = await Orders.findOne({ _id: id });
+
+
+        for (const product of canceledOrder.product) {
+              await Product.updateOne(
+                  { _id: product.id },
+                  { $inc: { stock: product.quantity }}
+              );
+      }
+
+
 
         // if(payMethod === 'wallet' || payMethod === 'razorpay'){
-          await User.findByIdAndUpdate( userId, { $set:{ wallet:updateWallet }}, { new:true })
+        await User.findByIdAndUpdate( userId, { $set:{ wallet:updateWallet }}, { new:true })
         // }
 
         await Orders.findByIdAndUpdate(id, { $set: { status: 'Cancelled' } }, { new: true });
+
+
 
         res.json('sucess')
     } catch (error) {
@@ -194,6 +209,27 @@ const filterOrders = async (req, res) => {
  const returnOrder = async(req, res) => {
     try {
         const id = req.query.id
+
+        const userData = req.session.user
+        const userId   =  userData._id
+        
+        const { updateWallet, payMethod } = req.body
+
+
+        let canceledOrder = await Orders.findOne({ _id: id });
+
+
+        for (const product of canceledOrder.product) {
+              await Product.updateOne(
+                  { _id: product.id },
+                  { $inc: { stock: product.quantity }}
+              );
+      }
+
+
+
+        // if(payMethod === 'wallet' || payMethod === 'razorpay'){
+        await User.findByIdAndUpdate( userId, { $set:{ wallet:updateWallet }}, { new:true })
 
         await Orders.findByIdAndUpdate(id, { $set: { status: 'Returned' } }, { new: true });
 
