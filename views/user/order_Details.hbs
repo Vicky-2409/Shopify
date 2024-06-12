@@ -180,19 +180,26 @@
                                                                             <input type="hidden"
                                                                                 name="amount_after_discount"
                                                                                 value="{{myOrderDetails.amountAfterDscnt}}">
-                                                                            {{else}}
-                                                                            <dl class="dlist">
-                                                                                <dt>Coupon used:</dt>
-                                                                                <dd>None</dd>
-                                                                            </dl>
-                                                                            {{/if}}
-                                                                        </dl>
-                                                                        <dl class="dlist">
+                                                                                </dl>
+                                                                                                                                         <dl class="dlist">
                                                                             <dt>Grand total:</dt>
                                                                             <dd> <b
                                                                                     class="h5">{{myOrderDetails.amountAfterDscnt}}</b>
                                                                             </dd>
                                                                         </dl>
+                                                                            
+                                                                            {{else}}
+                                                                            <dl class="dlist">
+                                                                                <dt>Coupon used:</dt>
+                                                                                <dd>None</dd>
+                                                                            </dl>
+                                                                                                                                                    <dl class="dlist">
+                                                                            <dt>Grand total:</dt>
+                                                                            <dd> <b
+                                                                                    class="h5">{{myOrderDetails.total}}</b>
+                                                                            </dd>
+                                                                        </dl>
+                                                                            {{/if}}
                                                                         <dl class="dlist">
                                                                             <dt class="text-muted">Status:</dt>
                                                                             <dd>
