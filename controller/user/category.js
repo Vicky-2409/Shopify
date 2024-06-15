@@ -35,9 +35,12 @@ const categoryFilter = async(req, res)=>{
     try {
         const id       = req.query.id
         const catData  = await Category.find({isListed:true}).lean()
-        const productData = await Product.find({ category: id, is_blocked:false }).lean()
-        console.log(productData.length)
-        res.render( 'user/category', {productData, catData})
+        const productData = await Product.find({ category: id, is_blocked:false }).populate('category', 'category').lean()
+        const newProduct = await Product.find({is_blocked: false})
+        .sort({_id:-1})
+        .limit(3)
+        .lean();
+        res.render( 'user/category', {productData, catData, newProduct})
     } catch (error) {
         console.log(error);
     }   

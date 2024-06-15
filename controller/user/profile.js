@@ -25,8 +25,9 @@ module.exports = {
 
  manageAdress : async(req, res) => {
     try {
-        const userData = req.session.user
-        const id       = userData._id
+        const user=req.session.user
+        const id = user._id    
+        const userData = await User.findById(id).lean();
         
         const userAddress = await Address.find({userId : id}).lean()
         res.render('user/manage_address', {userAddress, userData})
@@ -39,9 +40,12 @@ module.exports = {
 //// To add new address  ////
 
 
-addNewAddress : (req, res) => {
+addNewAddress : async(req, res) => {
     try {
-        res.render('user/add_new_address')
+        const user=req.session.user
+        const id = user._id    
+        const userData = await User.findById(id).lean();
+        res.render('user/add_new_address',{userData})
     } catch (error) {
         console.log(error);
     }
@@ -53,8 +57,9 @@ addNewAddress : (req, res) => {
 
 addNewAddressPost: async(req, res) => {
     try {
-        const userData = req.session.user
-        const id       = userData._id
+        const user=req.session.user
+        const id = user._id    
+        const userData = await User.findById(id).lean();
         
         const adress = new Address({
             userId      : id,
@@ -80,12 +85,15 @@ editAddress : async (req, res) => {
     try {
 
         const id = req.params.id
+        const user=req.session.user
+        const userId = user._id    
+        const userData = await User.findById(userId).lean();
 
         const address = await Address.findById(id);
         const addressObject = address.toObject();
         console.log(address)
 
-        res.render('user/editAddress',{ address:addressObject })
+        res.render('user/editAddress',{ address:addressObject,userData })
     } catch (error) {
         console.log(error);
     }
@@ -122,10 +130,13 @@ editAddressPost : async (req, res) => {
 ///// Edit user details  //////
 
 
-editDetails: (req, res) => {
+editDetails: async(req, res) => {
 
     try {
-        const userData = req.session.user
+        const user=req.session.user
+        const id = user._id    
+        const userData = await User.findById(id).lean();
+
         res.render('user/edit_user', {userData})
     } catch (error) {
         console.log(error);
@@ -173,7 +184,9 @@ updateDetails: async (req, res) => {
 
     walletpage :async (req,res)=>{
     
-    const userData = await User.findById(req.session.user._id).lean();
+        const user=req.session.user
+        const id = user._id    
+        const userData = await User.findById(id).lean();
     try {
         // const userId = req.query.id
         res.render('user/wallet',{userData})

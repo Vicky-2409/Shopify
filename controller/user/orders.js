@@ -73,9 +73,11 @@ const myOrders = async (req, res) => {
     if(req.query.page){
       page = req.query.page
     }
-    const limit = 3;
-      const userData = req.session.user
-      const userId   = userData._id
+    const limit = 10;
+      const user = req.session.user
+      const userId   = user._id
+      const userData = await User.findById({_id:userId}).lean()
+      
 
       const orders = await Orders.find({ userId })
                                   .sort({ date: -1 })
@@ -90,7 +92,6 @@ const myOrders = async (req, res) => {
           return { ...order.toObject(), date: formattedDate }
       })
 
-      console.log(formattedOrders);
 
       res.render('user/my_orders', {
           userData,
@@ -99,8 +100,8 @@ const myOrders = async (req, res) => {
       })
 
   } catch (error) {
-      console.log(error);
-  }
+    console.log(error.message);
+    res.status(500).send(" Error");  }
 }
 
 
@@ -158,10 +159,20 @@ const filterOrders = async (req, res) => {
 
 
 
- const orderSuccess = (req, res) => {
+ const orderSuccess = async(req, res) => {
     try {
       const userData = req.session.user
-        res.render('user/order_sucess', {userData})
+      const orderId = req.query.orderID
+      console.log(orderId)
+      const myOrderDetails = await Orders.findOne({ orderId: orderId }).lean();
+      const orderedProDet  = myOrderDetails.product
+      const addressId      = myOrderDetails.address
+      const formattedDate = moment(myOrderDetails.date).format("MMMM D, YYYY");
+
+      const address        = await Address.findById(addressId).lean()
+
+
+        res.render('user/order_sucess', { myOrderDetails, orderedProDet, userData, address ,formattedDate})
     } catch (error) {
         console.log(error);
     }
@@ -241,6 +252,21 @@ const filterOrders = async (req, res) => {
 
 
 
+ const returnMsg = async (req, res) => {
+  try {
+    let orderId = req.query.id
+    console.log("aAAIYYDDDDDDDD", orderId)
+    await Orders.findByIdAndUpdate(orderId, { $set: { returnMsg: req.body.message } })
+
+    let ord = await Orders.find({_id:orderId}).lean()
+    console.log(ord)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
  const getInvoice = async (req, res) => {
   try {
     const orderId = req.query.id; 
@@ -268,8 +294,6 @@ const filterOrders = async (req, res) => {
     }));
     console.log(products)
 
-    const subtotal = 1111;
-    const total = 11111;
 
     const date = moment(order.date).format('MMMM D, YYYY');
     
@@ -320,7 +344,6 @@ const filterOrders = async (req, res) => {
 
 
       products: products,
-      bottomNotice: `Subtotal: $${subtotal} | Total: $${total}`
      
     };
 
@@ -358,4 +381,5 @@ module.exports = {
     getInvoice,
     returnOrder,
     filterOrders,
+    returnMsg
 }

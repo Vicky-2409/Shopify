@@ -7,6 +7,103 @@
     </div>
     <h1 style="color: #88B04B; font-family: 'Nunito Sans', 'Helvetica Neue', sans-serif; font-weight: 900; font-size: 40px; margin-bottom: 10px;">Success</h1>
     <p style="color: #404F5E; font-family: 'Nunito Sans', 'Helvetica Neue', sans-serif; font-size: 20px; margin: 0;">We received your purchase request;<br /> we'll be in touch shortly!</p>
+    <br>
+                                                <div class="col-lg-12">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="25%">Product</th>
+                                                                <th width="25%">Unit Price</th>
+                                                                <th width="25%">Quantity</th>
+                                                                <th width="25%">Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {{#each orderedProDet}}
+                                                            <tr>
+                                                                <td>
+                                                                    <a class="itemside" href="#">
+                                                                        <div class="left">
+                                                                            <img src="/images/products/{{this.image}}"
+                                                                                width="40" height="40" class="img-xs"
+                                                                                alt="Item">
+                                                                        </div>
+                                                                        <div class="info">{{this.name}}</div>
+                                                                    </a>
+                                                                </td>
+                                                                <td> ₹ {{this.price}} </td>
+                                                                <td>{{this.quantity}} </td>
+                                                                <td >{{multiply this.quantity
+                                                                    this.price}}</td>
+                                                            </tr>
+                                                            {{/each}}
+
+
+
+                                                            <tr>
+                                                                <td colspan="4">
+                                                                    <article class="float-end">
+                                                                        <dl class="dlist">
+                                                                            <dt>Subtotal:</dt>
+                                                                            <dd>{{myOrderDetails.total}}</dd>
+                                                                            <input type="hidden" name="total"
+                                                                                value="{{myOrderDetails.total}}">
+                                                                            <input type="hidden" name="user_wallet" value="{{userData.wallet}}">
+                                                                            <input type="hidden" name="pay-method"
+                                                                                value="{{myOrderDetails.paymentMethod}}">
+                                                                        </dl>
+                                                                                                                                                <dl class="dlist">
+                                                                            <dt>Delivery:</dt>
+                                                                            <dd>50</dd>
+                                                                        </dl>
+                                                                        {{#if myOrderDetails.coupon}}
+                                                                        <dl class="dlist">
+                                                                            <dt>Coupon used:</dt>
+                                                                            <dd>{{myOrderDetails.coupon}}</dd>
+                                                                        </dl>
+                                                                        <dl class="dlist">
+                                                                            <dt>Discount:</dt>
+                                                                            <dd>-{{myOrderDetails.discountAmt}}</dd>
+                                                                            <input type="hidden" id="coupon"
+                                                                                value="{{ myOrderDetails.coupon}}">
+                                                                            <input type="hidden"
+                                                                                name="amount_after_discount"
+                                                                                value="{{myOrderDetails.amountAfterDscnt}}">
+                                                                                </dl>
+                                                                                                                                         <dl class="dlist">
+                                                                            <dt>Grand total:</dt>
+                                                                            <dd> <b
+                                                                                    class="h5">{{myOrderDetails.amountAfterDscnt}}</b>
+                                                                            </dd>
+                                                                        </dl>
+                                                                            
+                                                                            {{else}}
+                                                                            <dl class="dlist">
+                                                                                <dt>Coupon used:</dt>
+                                                                                <dd>None</dd>
+                                                                            </dl>
+                                                                                                                                                    <dl class="dlist">
+                                                                            <dt>Grand total:</dt>
+                                                                            <dd> <b
+                                                                                    class="h5">{{add myOrderDetails.total 50}}</b>
+                                                                            </dd>
+                                                                        </dl>
+                                                                            {{/if}}
+                                                                        <dl class="dlist">
+                                                                            <dt class="text-muted">Status:</dt>
+                                                                            <dd>
+                                                                                <span
+                                                                                    class="badge rounded-pill alert-success text-success">{{myOrderDetails.status}}</span>
+                                                                            </dd>
+                                                                        </dl>
+                                                                    </article>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div> <!-- table-responsive// -->
+                                            </div> <!-- col// -->
   </div>
   <div>
     <a class="btn btn-primary m-5" href="/my_orders" style="margin: 20px; padding: 10px 20px;  text-decoration: none; border-radius: 4px;">View Order</a>

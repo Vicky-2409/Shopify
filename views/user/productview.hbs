@@ -3,9 +3,9 @@
     <div class="page-header breadcrumb-wrap">
         <div class="container">
             <div class="breadcrumb">
-                <a href="index.html" rel="nofollow">Home</a>
-                <span></span> Fashion
-                <span></span> Abstract Print Patchwork Dress
+                <a href="/" rel="nofollow">Home</a>
+                <span></span> <a href="/product"> Shop</a>
+                <span></span> {{proData.name}}
             </div>
         </div>
     </div>
@@ -43,21 +43,14 @@
                                      <input name="product_name" value="{{proData.name}}" type="hidden">
                                     <div class="product-detail-rating">
                                         <div class="pro-details-brand">
-                                            {{!-- <span> Brands: <a href="shop-grid-right.html">Bootstrap</a></span> --}}
+                                            <span> Category: {{proData.category.category}}</span>
                                         </div>
-                                        <div class="product-rate-cover text-end">
-                                            <div class="product-rate d-inline-block">
-                                                <div class="product-rating" style="width:90%">
-                                                </div>
-                                            </div>
-                                            <span class="font-small ml-5 text-muted"> (25 reviews)</span>
-                                        </div>
+
                                     </div>
                                     <div class="clearfix product-price-cover">
                                         <div class="product-price primary-color float-left">
                                             <ins><span class="text-brand">₹{{proData.price}}</span></ins>
-                                            <ins><span class="old-price font-md ml-15">₹{{proData.price}}</span></ins>
-                                            <span class="save-price  font-md color3 ml-15">25% Off</span>
+                                            
                                         </div>
                                     </div>
                                     <div class="bt-1 border-color-1 mt-15 mb-15"></div>
@@ -66,7 +59,7 @@
                                     </div>
                                     <div class="product_sort_info font-xs mb-30">
                                         <ul>
-                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year AL Jazeera Brand
+                                            <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year Brand
                                                 Warranty</li>
                                             <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy
                                             </li>
@@ -104,11 +97,11 @@
                                     </div> --}}
                                     <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                     <div class="detail-extralink">
-                                        <div class="detail-qty border radius">
+                                        {{!-- <div class="detail-qty border radius">
                                             <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                             <span class="qty-val">1</span>
                                             <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-                                        </div>
+                                        </div> --}}
                                         <div class="product-extra-link2">
 
                                             
@@ -139,10 +132,7 @@
 									  </div>
 
 									  {{/if}}
-                                            <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                                href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                            <a aria-label="Compare" class="action-btn hover-up"
-                                                href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+
                                         </div>
                                     </div>
                                     <ul class="product-meta font-xs color-grey mt-50">
@@ -643,6 +633,99 @@
                                 </div>
                             </div>
                         </div> --}}
+                        <div class="tab-pane" id="Reviews">
+                                        <!--Comments-->
+                                        <div class="comments-area">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    {{#if reviewExist}}
+                                                    <h4 class="mb-30"> REVIEWS</h4>
+                                                    <div class="comment-list">
+                                                        {{#each reviews}}
+                                                        <div class="single-comment justify-content-between d-flex">
+                                                            <div class="user justify-content-between d-flex">
+                                                                <div class="thumb text-center">
+                                                                    <img src="/images/users/profile.jpg" alt="">
+                                                                    <h6><a href="#">{{this.name}}</a></h6>
+                                                                    {{!-- <p class="font-xxs">Since 2012</p> --}}
+                                                                </div>
+                                                                <div class="desc">
+
+                                                                    <p>{{this.comment}}</p>
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <p class="font-xs mr-30">{{formatDate this.createdAt "MMMM D, YYYY"}} </p>
+                                                                            {{!-- <a href="#" class="text-brand btn-reply">Reply <i class="fi-rs-arrow-right"></i> </a> --}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {{/each}}
+                                                        <!--single-comment -->
+                                                       
+                                                        <!--single-comment -->
+                                                        
+                                                    </div>
+                                                    {{else}}
+                                                    <h4>No Reviews Yet...</h4>
+                                                    {{/if}}
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <!--comment form-->
+                                        {{#if userCanReview}}
+                                        <div class="comment-form">
+                                            <h4 class="mb-15">Write a review</h4>
+                                            <div class="d-inline-block">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-8 col-md-12">
+                                                    <form class="form-contact comment_form" action="/addReview" method = "post" id="commentForm">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" name="name" id="name" type="text" placeholder="Name" value = "{{userData.name}}" hidden>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" name="email" id="email" type="email" placeholder="Email" value = "{{userData.email}}" hidden>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6" style="display: none;">
+                                                                <div class="form-group">
+                                                                    <input class="form-control" name="proId" id="proId" type="text" placeholder="" value = "{{proData._id}}" hidden>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="button button-contactForm">Submit
+                                                                Review</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{else}}
+                                        <div class="comment-form">
+                                            <h4 class="mb-15">Purchase and review our product</h4>
+                                            <div class="product-rate d-inline-block mb-30">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-8 col-md-12">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{/if}}
+                                    </div>
                         <div class="banner-img banner-big wow fadeIn f-none animated mt-50">
                             <img class="object-fit-cover border-radius-10" src="assets/imgs/banner/banner-4.png" alt="">
                             <div class="banner-text">

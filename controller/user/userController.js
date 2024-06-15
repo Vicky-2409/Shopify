@@ -4,6 +4,8 @@ const userHelper = require('../../helpers/user.helper')
 const Product    = require('../../model/productModel')
 const Category   = require('../../model/categoryModel')
 const Banners    = require('../../model/banner')
+const Review      = require('../../model/review')
+const Order      = require('../../model/order')
 const { log } = require('handlebars')
 
 
@@ -22,12 +24,23 @@ let message2
 //To load home
 
 const loadHome = async(req, res)=>{
+
+
    
    try {
-    const loadProData = await Product.find({is_blocked: false}).lean()
+    const loadProData = await Product.find({is_blocked: false}).limit(8).lean()
     const loadCatData = await Category.find({isListed:true}).lean()
     const banners     = await Banners.find().lean()
-    const userData = req.session.user
+    console.log(banners)
+
+    const user = req.session.user
+    let  userData = user
+    if(user){
+        const userId = user._id
+        userData = await User.findById(userId).lean()
+    }
+
+
 
 
     res.render('user/home',{userData, loadProData, loadCatData, banners})
@@ -41,11 +54,11 @@ const loadHome = async(req, res)=>{
 
 
 const getProduct = async (req, res) => {
-    const user = req.session.user;
+
 
     try {
         let page = 1; // Initial page is always 1 for the GET request
-        const limit = 4;
+        const limit = 6;
         const loadCatData = await Category.find({isListed:true}).lean();
         const proData = await Product.find({ is_blocked: false })
             .skip((page - 1) * limit)
@@ -60,12 +73,19 @@ const getProduct = async (req, res) => {
         const totalPages = Math.ceil(count / limit);
         const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
+        const user = req.session.user
+        let  userData = user
+        if(user){
+            const userId = user._id
+            userData = await User.findById(userId).lean()
+        }
+
         res.render('user/products', {
             proData,
             newProduct,
             pages,
             currentPage: page,
-            userData: user,
+            userData,
             loadCatData,
             currentFunction: 'getProductsPage',
             count
@@ -77,11 +97,10 @@ const getProduct = async (req, res) => {
 };
 
 const getProductsPage = async (req, res) => {
-    const user = req.session.user;
 
     try {
         const page = parseInt(req.body.page); // Get the page number from the POST request
-        const limit = 4;
+        const limit = 6;
         const proData = await Product.find({ is_blocked: false })
             .skip((page - 1) * limit)
             .limit(limit)
@@ -90,6 +109,13 @@ const getProductsPage = async (req, res) => {
         const count = await Product.countDocuments({ is_blocked: false });
         const totalPages = Math.ceil(count / limit);
         const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+        const user = req.session.user
+        let  userData = user
+        if(user){
+            const userId = user._id
+            userData = await User.findById(userId).lean()
+        }
 
         res.json({
             proData,
@@ -109,10 +135,11 @@ const getProductsPage = async (req, res) => {
 
 
 const ProductView = async(req, res)=>{
+
+
     try {
       const proId = req.query.id
       const proData = await Product.findById(proId).populate('category', 'category').lean()
-      const userData = req.session.user
       await Product.updateOne(
         {
             _id: proId
@@ -123,13 +150,72 @@ const ProductView = async(req, res)=>{
             }
         }
     )
+
+    const reviews = await Review.find({productId: proId}).lean()
+
+        console.log(reviews)
+        let reviewExist = true
+        if(reviews.length == 0){
+            reviewExist = false
+        }
+        let userCanReview = false;
+    
+
+
+
+    const user = req.session.user
+    let  userData = user
+    if(user){
+        const userId = user._id
+        userData = await User.findById(userId).lean()
+        const Orders = await Order.find({userId :userId , status: "Delivered"},{product:1,_id:0})
+        for(let i of Orders){
+            
+            for(let j of i.product){
+                console.log(j.name)
+                if(j.name == proData.name){
+                    console.log("I found " , j.name)
+                    userCanReview = true
+                }
+            }
+        }
+        console.log(userCanReview)
+
+
+    }
     
 
       if (userData) {
-        res.render('user/productview', {proData, userData})
+        res.render('user/productview', {proData, userData, reviews, reviewExist, userCanReview})
       }else{
-        res.render('user/productview', {proData})    
+        res.render('user/productview', {proData, reviews, reviewExist})    
       }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+const addNewReviewPost = async(req, res) => {
+    try {
+        const userData = req.session.user
+        const id       = userData._id
+        
+        const review = new Review({
+            userId      : id,
+            productId   : req.body.proId,
+            name        : req.body.name,
+            // rating      : req.body.rating,
+            comment     : req.body.comment, 
+            email       : req.body.email,
+            // date        : Date.now, 
+            is_default  : false,
+        })
+
+        const reviewData = await review.save()
+        console.log(reviewData)
+        res.redirect(`/productview?id=${req.body.proId}`)
+       
     } catch (error) {
         console.log(error);
     }
@@ -460,6 +546,7 @@ module.exports = {
     getProductsPage,
     loadHome ,  
     ProductView, 
+    addNewReviewPost,
     userLogin, 
     usersignup, 
     doSignup, 

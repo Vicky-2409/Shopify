@@ -7,6 +7,7 @@ const Coupon      = require("../../model/coupon");
 const Orders      = require("../../model/order");
 const Address     = require("../../model/address");
 const Banner      = require('../../model/banner')
+const Reviews      = require('../../model/review')
 const moment      = require("moment");
 
 let adminData 
@@ -708,6 +709,63 @@ const changeOrderStatus = async (req, res) => {
   }
 };
 
+const returnRequest = async(req, res) => {
+  try {
+    
+    const orderId = req.query.id
+    let refundAmount 
+
+
+    const myOrderDetails = await Orders.findOne({ _id: orderId }).lean()
+
+    console.log(myOrderDetails);
+
+    let canceledOrder = await Orders.findOne({ _id: orderId });
+
+
+    for (const product of canceledOrder.product) {
+          await Product.updateOne(
+              { _id: product.id },
+              { $inc: { stock: product.quantity }}
+          );
+  }
+
+    const userId = myOrderDetails.userId
+
+    const userData = await User.find({_id : userId });
+
+    if(myOrderDetails.coupon){
+       refundAmount = myOrderDetails.amountAfterDscnt - 50 ;
+    } else {
+       refundAmount = myOrderDetails.total ;
+    }
+   
+    const updateWalletAmount = userData[0].wallet + refundAmount;
+
+
+    await User.findByIdAndUpdate(userId, { $set: { wallet: updateWalletAmount } }, { new: true })
+
+
+    await Orders.findByIdAndUpdate(orderId, { $set: { status: 'Returned' } }, { new: true });
+
+
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const returnDecline = async(req, res) => {
+  try {
+    
+    const orderId = req.query.id
+    await Orders.findByIdAndUpdate(orderId, { $set: { status: 'Rejected' } }, { new: true });
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
 
 const deleteProdImage =  async (req, res) => {
@@ -730,16 +788,16 @@ const deleteProdImage =  async (req, res) => {
 const loadBanner = async (req, res) => {
   try {
     
-    const bannerData = await Banner.find()
+    const bannerData = await Banner.find().lean()
     res.render('admin/banners' , {bannerData, layout:'adminlayout'})
   } catch (error) {
     console.log(error)
   }
 }
 
-const addBanner =  (req, res) => {
+const addBanner = async (req, res) => {
   try {
-   
+    const bannerData = await Banner.find()
     res.render('admin/add_banner', {bannerData, layout:'adminlayout'})
   } catch (error) {
     console.log(error);
@@ -759,6 +817,7 @@ const addBannerPost = async (req, res) => {
     })
 
     await banner.save()
+    res.redirect('/admin/banners')
   } catch (error) { 
     console.log(error)
   }
@@ -770,11 +829,40 @@ const deleteBanner = async (req, res) => {
   try {
     const id = req.query.id;
 
-    await Coupon.findByIdAndDelete(id);
+    await Banner.findByIdAndDelete(id);
 
     res.redirect("/admin/banners");
   } catch (error) {
     console.log(error);
+  }
+};
+
+
+const loadReviews = async (req , res)=> {
+  try {
+
+    const reviews = await Reviews.aggregate([
+      {
+        $lookup: {
+          from: "products",
+          localField: "productId",
+          foreignField: "_id",
+          as: "productDetails"
+        }
+      },
+      {
+        $unwind: "$productDetails"
+      }
+    ])
+    console.log(reviews)
+  
+
+console.log("REVIEWSSSSSSSSSSS" ,reviews)
+
+    res.render('admin/reviews' , {reviews , layout: 'adminlayout' })
+    
+  } catch (error) {
+    
   }
 };
 
@@ -814,9 +902,13 @@ module.exports = {
   deleteCoupon,
 
   changeOrderStatus,
+  returnRequest,
+  returnDecline,
 
   loadBanner,
   addBanner,
   addBannerPost,
   deleteBanner,
+
+  loadReviews
 };

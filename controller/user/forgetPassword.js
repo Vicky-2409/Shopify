@@ -68,6 +68,15 @@ const submitOtp = (req, res) => {
     }
 }
 
+const resendOtp =  async (req, res)=>{
+    try {
+        otp = await userHelper.verifyEmail(email)
+        res.redirect('/otp')
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 //// To check otp and render password reset page ////
 
@@ -129,4 +138,5 @@ module.exports = {
     submitOtpPost,
     resetPassword,
     resetPasswordPost,
+    resendOtp
 }

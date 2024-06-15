@@ -41,11 +41,9 @@
                         <aside class="col-lg-3 border-end">
                             <nav class="nav nav-pills flex-lg-column mb-4">
                                 <a class="nav-link " aria-current="page" href="/profile">General</a>
-                                <a class="nav-link"  style="background-color: rgb(8,129,120); color: white;" href="/my_orders">Orders</a>
+                                <a class="nav-link active"  href="/my_orders">Orders</a>
                                 <a class="nav-link" href="/wallet">Wallet</a>
                                 <a class="nav-link" href="/adresses">My Address</a>
-                                <a class="nav-link" href="#">Account details</a>
-                                <a class="nav-link" href="#">Newsletter</a>
                             </nav>
                         </aside>
                         <div class="col-lg-9">
@@ -167,6 +165,10 @@
                                                                             <input type="hidden" name="pay-method"
                                                                                 value="{{myOrderDetails.paymentMethod}}">
                                                                         </dl>
+                                                                                                                                                <dl class="dlist">
+                                                                            <dt>Delivery:</dt>
+                                                                            <dd>50</dd>
+                                                                        </dl>
                                                                         {{#if myOrderDetails.coupon}}
                                                                         <dl class="dlist">
                                                                             <dt>Coupon used:</dt>
@@ -174,20 +176,20 @@
                                                                         </dl>
                                                                         <dl class="dlist">
                                                                             <dt>Discount:</dt>
-                                                                            <dd>{{myOrderDetails.discountAmt}}</dd>
+                                                                            <dd>-{{myOrderDetails.discountAmt}}</dd>
                                                                             <input type="hidden" id="coupon"
                                                                                 value="{{ myOrderDetails.coupon}}">
                                                                             <input type="hidden"
                                                                                 name="amount_after_discount"
                                                                                 value="{{myOrderDetails.amountAfterDscnt}}">
-                                                                                </dl>
-                                                                                                                                         <dl class="dlist">
+                                                                        </dl>
+                                                                                                                                                <dl class="dlist">
                                                                             <dt>Grand total:</dt>
                                                                             <dd> <b
                                                                                     class="h5">{{myOrderDetails.amountAfterDscnt}}</b>
                                                                             </dd>
                                                                         </dl>
-                                                                            
+                                                                                
                                                                             {{else}}
                                                                             <dl class="dlist">
                                                                                 <dt>Coupon used:</dt>
@@ -196,10 +198,12 @@
                                                                                                                                                     <dl class="dlist">
                                                                             <dt>Grand total:</dt>
                                                                             <dd> <b
-                                                                                    class="h5">{{myOrderDetails.total}}</b>
+                                                                                    class="h5">{{add myOrderDetails.total 50}}</b>
                                                                             </dd>
                                                                         </dl>
                                                                             {{/if}}
+                                                                        </dl>
+
                                                                         <dl class="dlist">
                                                                             <dt class="text-muted">Status:</dt>
                                                                             <dd>
@@ -293,25 +297,50 @@
 
 
 const status2 = () => {
-    Swal.fire({
-        title: 'Are you sure you want to return?',
-        text: "",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: 'Yes, return it!',
-        cancelButtonText: 'No, keep it',
-        dangerMode: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            changeStatus(orderId, 'return', 'Returned');
-            Swal.fire("Your order was returned!");
-            document.getElementById('return_btn').innerHTML = '';
-        } else {
-            Swal.fire("Your order was not returned!");
+            Swal.fire({
+                title: 'Are you sure you want to return?',
+                text: "",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Yes, return it!',
+                cancelButtonText: 'No, keep it',
+                dangerMode: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        input: "textarea",
+                        inputLabel: "Reason",
+                        inputPlaceholder: "Type your message here...",
+                        inputAttributes: {
+                            "aria-label": "Type your message here"
+                        },
+                        showCancelButton: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const message = result.value;
+                            fetch(`/return_msg?id=${orderId}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ message: message  })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                Swal.fire('Submitted!', 'Your message has been sent.', 'success');
+                            })
+                            .catch((error) => {
+                                Swal.fire('Error!', 'There was a problem sending your message.', 'error');
+                            });
+                        } else {
+                            Swal.fire("Your return process was canceled!");
+                        }
+                    });
+                } else {
+                    Swal.fire("Your order was not returned!");
+                }
+            });
         }
-    });
-}
-
 
 
 
@@ -324,7 +353,7 @@ const status2 = () => {
     // Check if a coupon is applied
     if (document.getElementById('coupon') && document.getElementsByName('amount_after_discount')[0]) {
       const amountAfterDiscount = Number(document.getElementsByName('amount_after_discount')[0].value);
-      updatedWallet = wallet + amountAfterDiscount;
+      updatedWallet = wallet + amountAfterDiscount - 50;
       console.log('Coupon applied. Amount after discount:', amountAfterDiscount);
     } else {
       // If no coupon, calculate updatedWallet with total amount

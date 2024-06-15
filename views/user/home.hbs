@@ -1,7 +1,8 @@
 <main class="main">
     <section class="home-slider position-relative pt-50">
         <div class="hero-slider-1 dot-style-1 dot-style-1-position-1">
-            <div class="single-hero-slider single-animation-wrap">
+            {{#each banners}}
+            <div class="single-hero-slider single-animation-wrap" onclick="window.location.href='{{this.link}}'">
                 <div class="container">
                     <div class="row align-items-center slider-animated-1">
                         <div class="col-lg-5 col-md-6">
@@ -16,13 +17,14 @@
                         </div>
                         <div class="col-lg-7 col-md-6">
                             <div class="single-slider-img single-slider-img-1">
-                                <img class="animated slider-1-1" src="/assets/imgs/slider/slider-1.png" alt="">
+                                <img class="animated slider-1-1" src="/images/products/{{this.image}}" alt="">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="single-hero-slider single-animation-wrap">
+            {{/each}}
+            {{!-- <div class="single-hero-slider single-animation-wrap">
                 <div class="container">
                     <div class="row align-items-center slider-animated-1">
                         <div class="col-lg-5 col-md-6">
@@ -41,8 +43,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="single-hero-slider single-animation-wrap">
+            </div> --}}
+            {{!-- <div class="single-hero-slider single-animation-wrap">
                 <div class="container">
                     <div class="row align-items-center slider-animated-1">
                         <div class="col-lg-5 col-md-6">
@@ -61,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="slider-arrow hero-slider-1-arrow"></div>
     </section>
@@ -116,16 +118,9 @@
                         <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one"
                             type="button" role="tab" aria-controls="tab-one" aria-selected="true">Featured</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="nav-tab-two" data-bs-toggle="tab" data-bs-target="#tab-two"
-                            type="button" role="tab" aria-controls="tab-two" aria-selected="false">Popular</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="nav-tab-three" data-bs-toggle="tab" data-bs-target="#tab-three"
-                            type="button" role="tab" aria-controls="tab-three" aria-selected="false">New added</button>
-                    </li>
+    
                 </ul>
-                <a href="#" class="view-more d-none d-md-flex">View More<i
+                <a href="/product" class="view-more d-none d-md-flex">View More<i
                         class="fi-rs-angle-double-small-right"></i></a>
             </div>
             <!--End nav-tabs-->
@@ -149,22 +144,17 @@
                                             href="/productview?id={{this._id}}"><i class="fi-rs-eye"></i></a>
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                        <span class="hot">Hot</span>
+
                                     </div>
                                 </div>
                                 <div class="product-content-wrap">
                                     <div class="product-category">
                                         <a href="shop-grid-right.html">{{this.category.category}}</a>
                                     </div>
-                                    <h2><a href="/productDetails/{{this._id}}">{{name}}</a></h2>
-                                    <div class="rating-result" title="90%">
-                                        <span>
-                                            <span>90%</span>
-                                        </span>
-                                    </div>
+                                    <h2><a href="/productview?id={{this._id}}">{{name}}</a></h2>
+                                
                                     <div class="product-price">
                                         <span>₹{{price}}</span>
-                                        <span class="old-price">₹{{price}}</span>
                                     </div>
 
                                 </div>
@@ -186,7 +176,7 @@
                 <div class="banner-text d-md-block d-none">
                     <h4 class="mb-15 mt-40 text-brand">New Releases</h4>
                     <h1 class="fw-600 mb-20">We're on Sale <br>Grab the oppurtunity</h1>
-                    <a href="/shop" class="btn">Learn More <i class="fi-rs-arrow-right"></i></a>
+                    <a href="/product" class="btn">Learn More <i class="fi-rs-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -204,6 +194,7 @@
                         <figure class=" img-hover-scale overflow-hidden">
                             <a href="/category?id={{this._id}}"><img src="/images/products/{{this.imageUrl}}"
                                     alt=""></a>
+                            
                         </figure>
                         <h5><a href="/category?id={{this._id}}">{{this.category}}</a></h5>
                     </div>

@@ -104,32 +104,39 @@
               <div class="mb-25">
                 <h5>Payment</h5>
               </div>
-              <div class="payment_option">
-                <div class="custome-radio">
-                  <input class="form-check-input" required="" type="radio" name="payment_option" id="cash-on-delivery"
-                    checked="" value="cash-on-delivery">
-                  <label class="form-check-label" for="cash-on-delivery" data-bs-toggle="collapse"
-                    data-target="#bankTranfer" aria-controls="bankTranfer">Cash On Delivery</label>
+<div class="payment_option">
+                <div class="payment_option">
+                  <div class="custome-radio">
+                    <input class="form-check-input" required="" type="radio" name="payment_option" id="cash-on-delivery"
+                      value="cash-on-delivery">
+                    <label class="form-check-label" for="cash-on-delivery" data-bs-toggle="collapse"
+                      data-target="#bankTranfer" aria-controls="bankTranfer">Cash On Delivery</label>
+                  </div>
+
+                  <div class="custome-radio">
+                    <input class="form-check-input" required="" type="radio" name="payment_option" value="razorpay"
+                      id="razorpay">
+                    <label class="form-check-label" for="razorpay" data-bs-toggle="collapse" data-target="#checkPayment"
+                      aria-controls="checkPayment"> Razor Pay</label>
+                  </div>
+
+                  <div class="custome-radio">
+                    <input class="form-check-input" required="" type="radio" name="payment_option" value="wallet"
+                      id="wallet">
+                    <label class="form-check-label" for="wallet" data-bs-toggle="collapse" data-target="#paypal"
+                      aria-controls="paypal"> Wallet</label>
+                  </div>
                 </div>
-                <div class="custome-radio">
-                  <input class="form-check-input" required="" type="radio" name="payment_option" value="razorpay"
-                    id="razorpay" checked="">
-                  <label class="form-check-label" for="razorpay" data-bs-toggle="collapse" data-target="#checkPayment"
-                    aria-controls="checkPayment"> Razor Pay</label>
-                </div>
-                <div class="custome-radio">
-                  <input class="form-check-input" required="" type="radio" name="payment_option" value="wallet"
-                    id="wallet" checked="">
-                  <label class="form-check-label" for="wallet" data-bs-toggle="collapse" data-target="#paypal"
-                    aria-controls="paypal"> Wallet</label>
-                </div>
+
                 <div class="hotline d-none d-lg-block">
 
-                  <p class="my-2 mx-2">Available Balance : <strong><span id="update_wallet"> ₹{{userData.wallet}}</span>
+                  <p class="my-2">Available Balance : <strong><span id="update_wallet" class="badge bg-secondary mx-2"
+                        style="color: white;"> ₹ {{userData.wallet}}</span>
                     </strong></p>
 
                   <input type="hidden" value="{{userData.wallet}}" name="wallet">
                 </div>
+
               </div>
             </div>
             <span id="order_button">
@@ -304,6 +311,8 @@
 
 
   const useWallet = () => {
+    const selectAddress = document.querySelector('#selectedAddress').value
+    if(selectAddress){
     const wallet = document.getElementsByName('wallet')[0].value
     const subTotal = Number(document.getElementsByName('subTotal')[0].value)
     console.log(wallet, 'walletttttttttttt', subTotal)
@@ -316,6 +325,9 @@
     } else {
       alertify.set('notifier', 'position', 'bottom-center');
       alertify.success('you dont have sufficient balance in ur wallet choose another payment method')
+    }     } else{
+      alertify.set('notifier', 'position', 'bottom-center');
+      alertify.success('Please select an address')
     }
   }
 
@@ -323,6 +335,9 @@
 
   const Cod = async () => {
     const selectAddress = document.querySelector('#selectedAddress').value
+    if(selectAddress){
+
+
     const subTotal = Number(document.getElementsByName('subTotal')[0].value)
 
     const datas = await fetch('/place_order', {
@@ -343,8 +358,12 @@
     })
 
     const placeOrderData = await datas.json()
-    window.location.href = '/order_sucess'
-
+    const orderID = placeOrderData.orderDetails.orderId;
+    window.location.href = `/order_sucess?orderID=${orderID}`
+    } else{
+      alertify.set('notifier', 'position', 'bottom-center');
+      alertify.success('Please select an address')
+    }
 
 
 
@@ -353,6 +372,8 @@
 
   const online = () => {
     subTotal = Number(document.getElementsByName('subTotal')[0].value)
+    const selectAddress = document.querySelector('#selectedAddress').value
+    if(selectAddress){
 
 
     var options = {
@@ -372,6 +393,10 @@
     };
     var rzp1 = new Razorpay(options);
     rzp1.open();
+    } else{
+      alertify.set('notifier', 'position', 'bottom-center');
+      alertify.success('Please select an address')
+    }
 
   }
 

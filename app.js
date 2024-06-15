@@ -12,6 +12,7 @@ const exphbs = require('express-handlebars')
 const nocache = require('nocache')
 const multer = require('multer')
 const swal=require('sweetalert')
+const moment  = require('moment')
  require('dotenv').config()
 
  mongoose.set('strictQuery', false);
@@ -80,8 +81,24 @@ Handlebars.registerHelper('ifCond', function(v1, v2, options) {
 Handlebars.registerHelper('multiply', function(a, b) {
   return a * b;
 });
+
+Handlebars.registerHelper('add', function(a, b) {
+  return a + b;
+});
+
+
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+});
+
+Handlebars.registerHelper('formatDate', function (date, format) {
+  // Ensure the date is valid
+  if (!date || !moment(date).isValid()) {
+    return "Invalid Date";
+  }
+  
+  // Format the date using moment.js library
+  return moment(date).format(format);
 });
 
 
@@ -115,7 +132,7 @@ app.use('/', userRouter);
 // catch 404 and forward to error handler
 
 app.use(function(req, res, next) {
-  res.status(404).render('404');
+  res.status(404).render('404',{ layout:'errorlayout' });
 });
 
 

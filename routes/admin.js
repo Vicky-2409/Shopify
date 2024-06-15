@@ -50,11 +50,15 @@ router.get('/orders', adminAuth.isLogin, adminController.getOrders)
 router.get('/order_details', adminAuth.isLogin, adminController.orderDetails)
 
 router.post('/change_status', adminController.changeOrderStatus)
+router.post('/return_approve' , adminAuth.isLogin , adminController.returnRequest)
+router.post('/return_decline' , adminAuth.isLogin , adminController.returnDecline)
 
 router.get('/banners', adminController.loadBanner)
 router.get('/add_banner', adminController.addBanner)
 router.post('/add_banner', store.single('image'), adminController.addBannerPost)
 router.get('/delete_banner', adminController.deleteBanner)
+
+router.get('/reviews' , adminController.loadReviews)
 
 // router.get('/sales_report', dashBoards.currentMonthOrder)
 router.get('/get_sales', dashBoards.getSales)

@@ -165,6 +165,7 @@ const placeOrder = async(req, res) => {
 
         const ordered = await order.save()
 
+        await Coupon.updateOne({ code: req.body.couponName }, { $push: { usedBy: userId } });
 
         }else{
             const order = new Order({
@@ -213,9 +214,19 @@ const placeOrder = async(req, res) => {
 
           saveOrder()
 
+          const orderDetails = {
+            orderId: ordeId,
+            products: productDet,
+            total: subTotal,
+            paymentMethod: payMethod,
+          };
+  
+          console.log(orderDetails);
+
           res.json({ 
             CODsucess : true,
-            toal      : subTotal
+            toal      : subTotal,
+            orderDetails
         }) 
      }
 
@@ -238,10 +249,18 @@ const placeOrder = async(req, res) => {
 
             saveOrder()
 
+            const orderDetails = {
+                orderId: ordeId,
+                products: productDet,
+                total: subTotal,
+                paymentMethod: payMethod,
+              };
+
             res.json({
                 razorPaySucess : true,
                 order,
                 amount, 
+                orderDetails
             })
 
             
@@ -254,6 +273,14 @@ const placeOrder = async(req, res) => {
             const newWallet = req.body.updateWallet
             const userData  = req.session.user
             const userId = userData._id
+
+            const orderDetails = {
+                orderId: ordeId,
+                products: productDet,
+                total: subTotal,
+                paymentMethod: payMethod,
+              };
+
             console.log(newWallet)
 
              
@@ -262,7 +289,9 @@ const placeOrder = async(req, res) => {
 
             saveOrder()
 
-            res.json(newWallet)
+            res.json({newWallet,
+                orderDetails}
+            )
         }
        }  
 
@@ -296,7 +325,7 @@ const validateCoupon = async (req, res) => {
             if (isCpnAlredyUsed) {
                 res.json('already used');
             } else {
-                await Coupon.updateOne({ _id: couponId }, { $push: { usedBy: userId } });
+                // await Coupon.updateOne({ _id: couponId }, { $push: { usedBy: userId } });
 
                 const discnt = Number(discount);
                 let discountAmt = (subTotal * discnt) / 100;

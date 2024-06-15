@@ -39,6 +39,7 @@ router.get('/productview', userController.ProductView)
 router.post('/products_filter', userController.productSearch)
 router.post('/sort_product_name', userController.sortProductByName)
 router.post('/sort_product_price', userController.sortProductByPrice)
+router.post('/addReview', logedin, isBlocked, userController.addNewReviewPost)
 
 
 router.get('/category_fil', category.catFilter)
@@ -74,6 +75,7 @@ router.post('/forget_password', forgetPassword.submitMailPost)
 
 router.get('/otp', isLogout, forgetPassword.submitOtp)
 router.post('/otp', forgetPassword.submitOtpPost)
+router.get('/resentotp', isLogout, forgetPassword.resendOtp)
 
 router.get('/reset_password', isLogout, forgetPassword.resetPassword)
 router.post('/reset_password', forgetPassword.resetPasswordPost)
@@ -106,10 +108,12 @@ router.post('/place_order', logedin, isBlocked, checkout.placeOrder)
 
 router.get('/my_orders', logedin, isBlocked, orders.myOrders)
 
+
 router.get('/order_details', logedin, isBlocked, orders.orderDetails)
 router.get('/order_sucess', logedin, isBlocked, orders.orderSuccess)
 router.post('/cancel_order', logedin, isBlocked, orders.cancelOrder)
 router.post('/return_order', logedin, isBlocked, orders.returnOrder)
+router.post('/return_msg' , logedin , isBlocked , orders.returnMsg)
 
 router.get('/filter_orders', logedin, isBlocked, orders.filterOrders)
 

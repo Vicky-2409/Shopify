@@ -266,25 +266,18 @@ const filteredDataDisplay = (data) => {
                                 <i class="fi-rs-search"></i></a>
                         </div>
                         <div class="product-badges product-badges-position product-badges-mrg">
-                            <span class="hot">Hot</span>
                         </div>
                     </div>
                     <div class="product-content-wrap">
                         <div class="product-category">
-                            <a href="shop-grid-right.html">${product.category.category}</a>
+                            ${product.category.category}
                         </div>
                         <h2><a href="/productview?id=${product._id}">${product.name}</a>
                         <input type="hidden" id="name${product._id}" value="${product.name}">
                         <input type="hidden" id="id" value="${product._id}">
                         </h2>
-                        <div class="rating-result" title="90%">
-                            <span>
-                                <span>90%</span>
-                            </span>
-                        </div>
                         <div class="product-price">
                             <span>₹${product.price}</span>
-                            <span class="old-price">₹245.8</span>
                         </div>
                         <div class="product-action-1 show">
                             <span id="click${product._id}">

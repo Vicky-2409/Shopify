@@ -27,41 +27,32 @@
                                         </a>
                                     </div>
                                     <div class="product-action-1">
-                                        <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal"
-                                            data-bs-target="#quickViewModal">
+                                        <a aria-label="Quick view" class="action-btn hover-up" href="/productview?id={{this._id}}">
                                             <i class="fi-rs-search"></i></a>
-                                        <a aria-label="Add To Wishlist" class="action-btn hover-up"
-                                            href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                        <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i
-                                                class="fi-rs-shuffle"></i></a>
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                        <span class="hot">Hot</span>
+                                       
                                     </div>
                                 </div>
                                 <div class="product-content-wrap">
                                     <div class="product-category">
-                                        <a href="shop-grid-right.html">{{this.category.category}}</a>
+                                        <a href="#">{{this.category.category}}</a>
                                     </div>
                                     <h2><a href="/productview?id={{this._id}}">{{this.name}}</a>
 									<input type="hidden" id="name{{this._id}}" value="{{this.name}}">
 									<input type="hidden" id="id" value="{{this._id}}">
 									</h2>
-                                    <div class="rating-result" title="90%">  
-                                        <span>
-                                            <span>90%</span>
-                                        </span>
-                                    </div>
+
                                     <div class="product-price">
                                         <span>₹{{this.price}}</span>
-                                        <span class="old-price">₹245.8</span>
+                                      
                                     </div>
 
                                     <div class="product-action-1 show">
 										{{#if this.isWishlisted}}
 										<span id="click{{this._id}}">
                                         <a onclick="removeFromWishlist('{{this._id}}')" id="icon-1" aria-label="Add To Wishlist"
-                                            class="wish action-btn hover-up" href="#"><i class="fi fi-ss-heart"></i></a>
+                                            class="wish action-btn hover-up" href="#"><i class="fa-solid fa-heart"></i></a>
 										</span>
 										{{else}}
 										<span id="click{{this._id}}">
@@ -121,10 +112,10 @@
                         <h5 class="section-title style-1 mb-30 wow fadeIn animated">Sort</h5>
                         <ul>
                             {{!-- <li><a class="active" href="#">Featured</a></li> --}}
-                            <li><a href="/shop_lowToHigh">Price: Low to High</a></li>
-                            <li><a href="/shop_highToLow">Price: High to Low</a></li>
-                            <li><a href="/shop_loadAtoZ">A - Z</a></li>
-                            <li><a href="/shop_loadZtoA">Z - A</a></li>
+                            <li><a href="#">Price: Low to High</a></li>
+                            <li><a href="#">Price: High to Low</a></li>
+                            <li><a href="#">A - Z</a></li>
+                            <li><a href="#">Z - A</a></li>
                         </ul>
                     </div>
 
@@ -134,51 +125,22 @@
                             <h5 class="widget-title mb-10">New products</h5>
                             <div class="bt-1 border-color-1"></div>
                         </div>
+                        {{#each newProduct}}
                         <div class="single-post clearfix">
-                            <div class="image">
-                                <img src="/assets/imgs/shop/thumbnail-3.jpg" alt="#">
+                             <a href="/productview?id={{this._id}}">
+                            <div class="image" >
+                                <img src="/images/products/{{this.imageUrl.[0]}}" alt="#">
                             </div>
                             <div class="content pt-10">
-                                <h5><a href="shop-product-detail.html">Chen Cardigan</a></h5>
-                                <p class="price mb-0 mt-5">₹99.50</p>
-                                <div class="product-rate">
-                                    <div class="product-rating" style="width:90%"></div>
-                                </div>
+                                <h5><a href="/productview?id={{this._id}}">{{this.name}}</a></h5>
+                                <p class="price mb-0 mt-5">₹{{this.price}}</p>
+
                             </div>
+                            </a>
                         </div>
-                        <div class="single-post clearfix">
-                            <div class="image">
-                                <img src="/assets/imgs/shop/thumbnail-4.jpg" alt="#">
-                            </div>
-                            <div class="content pt-10">
-                                <h6><a href="shop-product-detail.html">Chen Sweater</a></h6>
-                                <p class="price mb-0 mt-5">₹89.50</p>
-                                <div class="product-rate">
-                                    <div class="product-rating" style="width:80%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-post clearfix">
-                            <div class="image">
-                                <img src="/assets/imgs/shop/thumbnail-5.jpg" alt="#">
-                            </div>
-                            <div class="content pt-10">
-                                <h6><a href="shop-product-detail.html">Colorful Jacket</a></h6>
-                                <p class="price mb-0 mt-5">₹25</p>
-                                <div class="product-rate">
-                                    <div class="product-rating" style="width:60%"></div>
-                                </div>
-                            </div>
-                        </div>
+                        {{/each}}
                     </div>
-                    <div class="banner-img wow fadeIn mb-45 animated d-lg-block d-none">
-                        <img src="/assets/imgs/banner/banner-11.jpg" alt="">
-                        <div class="banner-text">
-                            <span>Women Zone</span>
-                            <h4>Save 17% on <br>Office Dress</h4>
-                            <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

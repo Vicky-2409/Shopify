@@ -1,150 +1,328 @@
-<style>
-    body {
-            {
-                {
-                !-- background-color: #f2f6fc;
-                --
-            }
-        }
-
-        color:#69707a;
-    }
-
-    .img-account-profile {
-        height: 10rem;
-    }
-
-    .rounded-circle {
-        border-radius: 50% !important;
-    }
-
-    .card {
-        box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
-    }
-
-    .card .card-header {
-        font-weight: 500;
-    }
-
-    .card-header:first-child {
-        border-radius: 0.35rem 0.35rem 0 0;
-    }
-
-    .card-header {
-        padding: 1rem 1.35rem;
-        margin-bottom: 0;
-        background-color: rgba(33, 40, 50, 0.03);
-        border-bottom: 1px solid rgba(33, 40, 50, 0.125);
-    }
-
-    .form-control,
-    .dataTable-input {
-        display: block;
-        width: 100%;
-        padding: 0.875rem 1.125rem;
-        font-size: 0.875rem;
-        font-weight: 400;
-        line-height: 1;
-        color: #69707a;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #c5ccd6;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        border-radius: 0.35rem;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-
-    .nav-borders .nav-link.active {
-        color: #0061f2;
-        border-bottom-color: #0061f2;
-    }
-
-    .nav-borders .nav-link {
-        color: #69707a;
-        border-bottom-width: 0.125rem;
-        border-bottom-style: solid;
-        border-bottom-color: transparent;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        padding-left: 0;
-        padding-right: 0;
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-</style>
-
-{{>adminHeader}}
-<div class="container-fluid">
-    <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                <a href="#" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5 d-none d-sm-inline">Menu</span>
-                </a>
-                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-
-                    <li class="nav-item">
-                        <a href="/admin/home" class="nav-link align-middle px-0 "
-                            style="background-color: #fff; padding: 2px;">Home </a>
-                    </li>
-
-                    <li>
-                        <a href="/admin/manage_users" class="nav-link px-0 align-middle"> Users </a>
-                    </li>
-
-                    <li>
-                        <a href="/admin/category" class="nav-link px-0 align-middle btn btn-outline-primary">Category
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/admin/orders" class="nav-link px-0 align-middle">Orders</a>
-                    </li>
-                    <li>
-                        <a href="/admin/product" class="nav-link px-0 align-middle"> Products </a>
-                    </li>
-                    <li>
-                        <a href="/admin/coupons" class="nav-link px-0 align-middle"> Coupons </a>
-                    </li>
-                    <li>
-                        <a href="/admin/banners" class="nav-link px-0 align-middle"> Banner </a>
-                    </li>
-                </ul>
-                <hr>
-            </div>
-        </div>
-        <div class="col py-3" style="text-align: center;">
-             <div style="margin-left: 1080px;">
-        <a href="/admin/add_banner" type="button" class="btn btn-primary"
-          style="margin-left: auto; margin-bottom: 15px;">Add banner</a>
-      </div>
-
-             <table class="table table-hover" style="border-top: 1px solid black;">
-        <thead>
-          <tr>
-           
-            <th scope="col">Title</th>
-            <th scope="col">Image</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each bannerData}}
-          <tr>
-            
-            <td>{{this.title}}</td>
-            <td><img style="width 40px; height: 40px; " src="/uploads/{{this.image}}" alt=" image"></td>
-            <td>
-              {{!-- <a href="/admin/edit_category/{{this.id}}" onclick="return confirm ('Are you sure want to edit?')"
-                type="button" class="btn btn-warning">Edit</a> --}}
-              <a href="/admin/delete_banner?id={{this.id}}" onclick="return confirm ('Are you sure want to delete?')"
-                type="button" class="btn btn-danger">Delete</a>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
+<aside class="navbar-aside" id="offcanvas_aside">
+    <div class="aside-top">
+        <a href="/admin/home" class="brand-wrap">
+            <img src="/assetsAdmin/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+        </a>
+        <div>
+            <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+            </button>
         </div>
     </div>
-</div>
+    <nav>
+        <ul class="menu-aside">
+            <li class="menu-item ">
+                <a class="menu-link" href="/admin/home"> <i class="icon material-icons md-home"></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li class="menu-item ">
+                <a class="menu-link" href="/admin/product"> <i class="icon material-icons md-shopping_bag"></i>
+                    <span class="text">Products</span>
+                </a>
+
+            </li>
+            <li class="menu-item ">
+                <a class="menu-link" href="/admin/orders"> <i class="icon material-icons md-shopping_cart"></i>
+                    <span class="text">Orders</span>
+                </a>
+
+            </li>
+            <li class="menu-item ">
+                <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-category"></i>
+                    <span class="text">Category</span>
+                </a>
+
+            </li>
+
+            <li class="menu-item ">
+                <a class="menu-link" href="/admin/coupons"><i class="icon  fa-solid fa-ticket"></i>
+                    <span class="text">Coupons</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" href="/admin/manage_users"> <i class="icon material-icons md-person"></i>
+                    <span class="text">Users</span>
+                </a>
+
+            </li>
+                        </li>
+                        <li class="menu-item active">
+                <a class="menu-link" href="/admin/banners"><i class="icon fa-brands fa-font-awesome"></i>
+                    <span class="text">Banner</span>
+                </a>
+
+            </li>
+                        </li>
+                            <li class="menu-item">
+                <a class="menu-link " href="/admin/reviews"> <i class="icon material-icons md-comment"></i>
+                    <span class="text">Reviews</span>
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <ul class="menu-aside">
+            <li class="menu-item">
+                <a class="menu-link" href="/admin/logout"> <i class="icon material-icons md-exit_to_app"></i>
+                    <span class="text">Logout</span>
+                </a>
+
+        </ul>
+        <br>
+        <br>
+    </nav>
+</aside>
+{{!-- <header class="main-header navbar">
+    <div class="col-search">
+        <form class="searchform">
+            <div class="input-group">
+                <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+            </div>
+            <datalist id="search_terms">
+                <option value="Products">
+                <option value="New orders">
+                <option value="Apple iphone">
+                <option value="Ahmed Hassan">
+            </datalist>
+        </form>
+    </div>
+    <div class="col-nav">
+        <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                class="material-icons md-apps"></i> </button>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link btn-icon" href="#">
+                    <i class="material-icons md-notifications animation-shake"></i>
+                    <span class="badge rounded-pill">3</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+            </li>
+            <li class="dropdown nav-item">
+                <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
+                    aria-expanded="false"><i class="material-icons md-public"></i></a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                    <a class="dropdown-item text-brand" href="#"><img src="assets/imgs/theme/flag-us.png"
+                            alt="English">English</a>
+                    <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-fr.png"
+                            alt="Français">Français</a>
+                    <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                    <a class="dropdown-item" href="#"><img src="assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                </div>
+            </li>
+            <li class="dropdown nav-item">
+                <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
+                    aria-expanded="false"> <img class="img-xs rounded-circle" src="assets/imgs/people/avatar2.jpg"
+                        alt="User"></a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                    <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                    <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                    <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                    <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                    <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="#"><i
+                            class="material-icons md-exit_to_app"></i>Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</header> --}}
+<main class="main-wrap">
+
+    <section class="content-main">
+        <div class="content-header">
+            <h2 class="content-title">Banners list</h2>
+            <div>
+                <a href="/admin/add_banner" class="btn btn-primary"><i class="material-icons md-plus"></i> Add
+                    banner</a>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <!-- card-header end// -->
+            <div class="card-body ">
+                <div class="table-responsive ">
+                    <table class="table table-hover ">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th class="text-center">Title</th>
+                                <th class="text-center">Action </th>
+                            </tr>
+                        </thead>
+                        {{#each bannerData}}
+                        <tbody>
+                            <tr>
+                                <td width="20%" class="text-center">
+                                    <img src="/images/products/{{this.image}}" class="img-thumbnail" alt="Item">
+                                </td>
+                                <td class="text-center" style="vertical-align: middle;" width="20%">{{this.title}}</td>
+                                <td class="text-center" style="vertical-align: middle;" width="20%">
+                                    <a href="/admin/delete_banner?id={{this._id}}" type="button" class="btn btn-primary">
+                                        Delete
+                                    </a>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                        {{/each}}
+                    </table> <!-- table-responsive.// -->
+                </div>
+            </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    {{#each pages}}
+                    <li class="page-item active"><a class="page-link" href="?page={{this}}">{{this}}</a></li>
+                    {{/each}}
+                </ul>
+            </nav>
+        </div>
+    </section> <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script data-cfasync="false"
+                    src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+                <script>
+                    document.write(new Date().getFullYear())
+                </script> ©, Evara - HTML Ecommerce Template .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">
+                    All rights reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    ////////////delete product
+    $(document).ready(function () {
+        $(document).on('click', '#deleteprod', function (e) {
+            e.preventDefault();
+            var id = $(this).data('product-id');
+            //var wishId = $(this).data('whishlist-id'); // Corrected variable name to wishId
+
+            // Store reference to $(this) in a variable for use inside AJAX success and error callbacks
+            var $this = $(this);
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#088178",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/delete_product',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: id }),
+                        success: function (productData) {
+                            console.log("Product removed from Cart successfully");
+                            // If you want to remove the row from the table upon successful removal
+                            $this.closest('tr').remove(); // Use $this instead of $(this)
+                            // swal("Removed from wishlist", "The product has been removed from your wishlist.", "success");
+                            {
+                                Swal.fire({
+                                    title: 'Removed!',
+                                    //text: 'Product Succesfully Removed from Cart!!!',
+                                    icon: 'success',
+                                    confirmButtonText: 'Cool'
+                                })
+                            }
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error removing product from wishlist:", error);
+                            swal("Error", "Something went wrong. Please try again later.", "error");
+                        }
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        //text: "Your file has been deleted.",
+                        icon: "success"
+                    })
+                }
+            });
+
+
+        });
+    });
+
+
+    /////block product
+
+    $(document).ready(function () {
+        $(document).on('click', '#blockprod', function (e) {
+            e.preventDefault();
+            var id = $(this).data('product-id');
+            //var wishId = $(this).data('whishlist-id'); // Corrected variable name to wishId
+
+            // Store reference to $(this) in a variable for use inside AJAX success and error callbacks
+            var $this = $(this);
+
+            Swal.fire({
+                title: "Are you sure?",
+                // text: "Do you want to block the Product?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#088178",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/block_product',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: id }),
+                        success: function (productData) {
+                            console.log("ProductBlocked");
+
+
+                            {
+                                Swal.fire({
+                                    title: 'Done!',
+                                    //text: 'Product Succesfully Blocked!!!',
+                                    icon: 'success',
+                                    confirmButtonText: 'Cool'
+                                }).then(() => window.location.reload())
+                            }
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error removing product from wishlist:", error);
+                            swal("Error", "Something went wrong. Please try again later.", "error");
+                        }
+                    });
+                    Swal.fire({
+                        title: "Done!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+
+
+        });
+    });
+
+
+</script>

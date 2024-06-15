@@ -24,7 +24,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
+                    <a href="/" rel="nofollow">Home</a>
                     <span></span> Profile
                     <span></span> Orders
                 </div>
@@ -43,8 +43,6 @@
                                 <a class="nav-link active" href="/my_orders">Orders</a>
                              <a class="nav-link" href="/wallet">Wallet</a>
                                 <a class="nav-link" href="/adresses">My Address</a>
-                                <a class="nav-link" href="#">Account details</a>
-                                <a class="nav-link" href="#">Newsletter</a>
                             </nav>
                         </aside>
                         <div class="col-lg-9">
@@ -52,9 +50,6 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Order List </h2>
-                </div>
-                <div>
-                    <input type="text" placeholder="Search order ID" class="form-control bg-white">
                 </div>
             </div>
             <div class="card mb-4">
@@ -76,7 +71,7 @@
                                 <tr>
                                     <td class="text-center">{{this.orderId}}</td>
                                     <td class="text-center">{{this.paymentMethod}}</td>
-                                    <td class="text-center">₹{{this.total}}</td>
+                                    <td class="text-center">₹{{add this.total 50}}</td>
                                     <td class="text-center"><span class="badge rounded-pill alert-warning">{{this.status}}</span></td>
                                     <td class="text-center">{{this.date}}</td>
                                     <td class="text-center">
@@ -94,7 +89,7 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-start">
                     {{#each pages}}
-                             <li class="page-item active"><a class="page-link" href="?page={{this}}">{{this}}</a></li>
+                             <li class="page-item {{#ifeq this ../currentPage}}active{{/ifeq}}"><a class="page-link" href="?page={{this}}">{{this}}</a></li>
                     {{/each}}
                 </ul>
             </nav>
