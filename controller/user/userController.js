@@ -480,7 +480,7 @@ const productSearch = async(req, res)=>{
         try {
             const { sort, catId, page } = req.body;
             console.log('Sort:', sort); // Log sort order
-            const limit = 4;
+            const limit = 6;
             const skip = (page - 1) * limit;
     
             let query = { is_blocked: false };
@@ -513,7 +513,7 @@ const productSearch = async(req, res)=>{
         try {
             const { sort, catId, page } = req.body;
             console.log(sort, catId, page); // Log sort order
-            const limit = 4;
+            const limit = 6;
             const skip = (page - 1) * limit;
     
             let query = { is_blocked: false };
