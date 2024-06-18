@@ -343,13 +343,13 @@ function Validation() {
       });
 
       const data = await response.json();
-      console.log(data.message);
+
 
       if (data) {
         const imageElem = document.querySelector(`.pro-image[data-image-index="${imageIndex}"]`);
         if (imageElem) {
 
-          console.log(imageElem, 'htttttttttttttttttttttt')
+
           // or
           imageElem.remove(); // remove the image element completely
         }

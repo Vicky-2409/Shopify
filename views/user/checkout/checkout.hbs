@@ -270,10 +270,9 @@
     checkbox.addEventListener('change', () => {
       if (checkbox.checked) {
         paymentMethod = checkbox.value
-        console.log("User selected " + checkbox.value);
-        console.log(paymentMethod, 'payment method..........')
+
       } else {
-        console.log("User unchecked " + checkbox.value);
+
       }
     });
   });
@@ -305,7 +304,7 @@
     } else if (paymentMethod === 'wallet') {
       useWallet()
     } else {
-      console.log('Invalid payment method.')
+
     }
   }
 
@@ -315,12 +314,10 @@
     if(selectAddress){
     const wallet = document.getElementsByName('wallet')[0].value
     const subTotal = Number(document.getElementsByName('subTotal')[0].value)
-    console.log(wallet, 'walletttttttttttt', subTotal)
 
     if (wallet > subTotal) {
       updateWallet = wallet - subTotal
 
-      console.log(updateWallet, 'my name is update wallet...........')
       Cod()
     } else {
       alertify.set('notifier', 'position', 'bottom-center');
@@ -409,9 +406,7 @@
     couponEl = document.getElementById('copon').value
     subTotal = Number(document.getElementsByName('subTotal')[0].value)
 
-    console.log(couponEl)
 
-    console.log('heloooo from validate coupon...............')
     const response = await fetch('/validate_coupon', {
       method: 'POST',
       headers: {
@@ -426,9 +421,7 @@
     })
 
 
-    console.log('hiiiii from coupon status........;;;;;;')
     couponData = await response.json()
-    console.log(couponData)
 
     const setCouponStatus = (msg, id) => {
 
@@ -454,7 +447,6 @@
     }
 
     if (couponData.succes === 'succes') {
-      console.log('am from coupon sucesssss')
       setCouponStatus('Coupon applied successfuly', sCoponMsg)
 
       document.getElementById('new_sub_total').innerHTML = `<strong >${couponData.newTotal}</strong>`

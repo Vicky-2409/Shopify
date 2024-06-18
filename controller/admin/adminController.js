@@ -214,43 +214,6 @@ const editCategory = async (req, res) => {
 
 /// To update Category post///
 
-// const updateCategory = async (req, res) => {
-//   try {
-//     const catName = req.body.name;
-//     const image = req.file;
-//     const catId = req.params.id;
-
-//     const cat = await Category.findById(catId);
-//     const catImg = cat.imageUrl;
-//     let updImge;
-
-//     if (image) {
-//       updImge = image.filename;
-//     } else {
-//       updImge = catImg;
-//     }
-
-
-//     const catExist = await Category.findOne({ category: catName });
-
-//     if (!catExist) {
-//       await Category.findByIdAndUpdate(
-//         catId,
-//         {
-//           category: req.body.name,
-//           imageUrl: updImge,
-//         },
-//         { new: true }
-//       );
-
-//       req.session.categoryUpdate = true;
-//       res.redirect("/admin/category");
-//     } else {
-//       // req.session.catExist = true
-//       res.redirect("/admin/category");
-//     }
-//   } catch (error) {}
-// };
 
 const updateCategory = async (req, res) => {
   try {
@@ -291,16 +254,7 @@ const updateCategory = async (req, res) => {
 };
 /// To delete category ///
 
-// const deleteCategory = async (req, res) => {
-//   let catId = req.params.id;
 
-//   try {
-//     await Category.findByIdAndDelete(catId);
-//     res.redirect("/admin/category");
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 const deleteCategory = async (req, res) => {
   try {
@@ -353,9 +307,7 @@ const getProduct = async (req, res) => {
     ]);
 
     const count = await Product.find({}).count();
-    console.log(count)
 
-    // console.log(products);
     const totalPages = Math.ceil(count/limit)  // Example value
     const pages = Array.from({length: totalPages}, (_, i) => i + 1);
 
@@ -520,17 +472,7 @@ const deleteProduct = async (req, res) => {
   const {id} = req.body;
   await Product.findByIdAndDelete(id)
   res.redirect('/admin/product')
-  // const prodData = await Product.findById(proId);
-  // const isBlocked = prodData.is_blocked;
 
-  // const proData = await Product.findByIdAndUpdate(
-  //   proId,
-  //   { $set: { is_blocked: !isBlocked } },
-  //   { new: true }
-  // );
-
-  // res.redirect("/admin/product");
-  // req.session.proDelete = true;
 };
 
 const blockProduct = async (req, res) => {
@@ -549,26 +491,7 @@ const blockProduct = async (req, res) => {
   req.session.proDelete = true;
 };
 
-// const loadCoupon = async (req, res) => {
-//   try {
-//     const coupon = await Coupon.find();
 
-//     const now = moment();
-
-//     const couponData = coupon.map((cpn) => {
-//       const formattedDate = moment(cpn.expiryDate).format("MMMM D, YYYY");
-
-//       return {
-//         ...cpn,
-//         expiryDate: formattedDate,
-//       };
-//     });
-
-//     res.render("admin/coupon", { couponData, layout:'adminlayout' });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 const loadCoupon = async (req, res) => {
   try {
@@ -583,7 +506,6 @@ const loadCoupon = async (req, res) => {
   const count = await Coupon.find({}).count();
   const totalPages = Math.ceil(count/limit)
   const pages = Array.from({length: totalPages}, (_, i) => i + 1); 
-  console.log(coupon)
 
 
     // const coupon = await Coupon.find();
@@ -604,6 +526,8 @@ const loadCoupon = async (req, res) => {
     console.log(error);
   }
 };
+
+
 const addCoupon = (req, res) => {
   try {
     const couponMsg = "Coupon added successfuly..!!";
@@ -655,14 +579,12 @@ const addCouponPost = async (req, res) => {
 const deleteCoupon = async (req, res) => {
   try {
     const {id} = req.query
-    console.log(id)
+
 
     await Coupon.findByIdAndDelete(id);
 
     res.redirect('/admin/coupons')
-    // res.json({
-    //   success:true
-    // })
+
   } catch (error) {
     console.log(error);
   }
@@ -718,7 +640,6 @@ const   returnRequest = async(req, res) => {
 
     const myOrderDetails = await Orders.findOne({ _id: orderId }).lean()
 
-    console.log(myOrderDetails);
 
     let canceledOrder = await Orders.findOne({ _id: orderId });
 
@@ -854,10 +775,9 @@ const  loadReviews = async (req , res)=> {
         $unwind: "$productDetails"
       }
     ])
-    console.log(reviews)
+  
   
 
-console.log("REVIEWSSSSSSSSSSS" ,reviews)
 
     res.render('admin/reviews' , {reviews , layout: 'adminlayout' })
     

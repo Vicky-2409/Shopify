@@ -33,7 +33,7 @@ let email
 
  const submitMailPost = async(req, res) => {
     try {
-        console.log(req.body);
+
         email  = req.body.email 
         const userDetails  = await User.findOne({email:email})
 

@@ -157,7 +157,7 @@
 
 
    	const addToWishlist = async (id) => {
-		console.log('helooooooooooo from add to wishlist')
+
 
 		document.getElementById('click'+id).innerHTML= `<a aria-label="Add To Wishlist"
                                             class="wish action-btn hover-up" href="#"><i class="fi fi-ss-heart"></i></a>`
@@ -169,11 +169,11 @@
 			})
 
 			let data = await response.json()
-			console.log(data)
+
 			if(data){
 			}
 
-			console.log(data, 'am from add to wishlist...........//////////////////////////')
+		
 	} 
 
 

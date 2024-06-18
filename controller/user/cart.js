@@ -59,7 +59,7 @@ const loadCart = async (req, res) => {
 
     const user = await User.findOne({ _id: userId }).populate('cart.product').lean()
     const cart = user.cart; // Get the 'cart' array from the user document
-    console.log(cart)
+
 
 
      let subTotal = 0

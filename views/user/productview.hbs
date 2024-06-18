@@ -747,8 +747,6 @@ const addToCartBtn = async (proId) => {
 
 const productid = document.getElementById('add_to_cart_btn').value
 const productName = document.getElementsByName('product_name')[0].value
-
-console.log(productName)
  
 const response = await fetch(`/add_to_cart?id=${proId}`, {
 method: 'GET',
@@ -758,7 +756,7 @@ headers: {
 })
 
 let data = await response.json()
-console.log(data, 'from add to cart btn....')
+
 
 document.getElementById('cart_btn').innerHTML = 
 `<button onclick="window.location.href='/cart?id={{userData._id}}'" class="button button-add-to-cart">Go to cart</button>`

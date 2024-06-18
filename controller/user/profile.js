@@ -91,7 +91,7 @@ editAddress : async (req, res) => {
 
         const address = await Address.findById(id);
         const addressObject = address.toObject();
-        console.log(address)
+
 
         res.render('user/editAddress',{ address:addressObject,userData })
     } catch (error) {

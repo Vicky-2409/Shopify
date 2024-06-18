@@ -34,7 +34,7 @@ const loadCheckout = async (req, res) => {
       usedBy: { $nin: [userId] }
     }).lean();
 
-    console.log(availableCoupons)
+
     
         res.render('user/checkout/checkout', { userData:user, cart, addressData, subTotal, availableCoupons })    
 }
@@ -71,14 +71,13 @@ const loadCheckou = async (req, res) => {
     const userData = req.session.user
     const userId   = userData._id
 
-    console.log(userData.wallet, 'hiiii am from checkout walletttttttttttttttttt');
+
 
     const addressData = await Address.find({userId : userId})
 
     const userDataa  = await User.findOne({ _id: userId }).populate("cart.product").lean()
     const cart       = userDataa.cart
 
-    console.log(cart, 'cart aaaannnnnnnnnnnnnnn')
 
     let subTotal = 0
     cart.forEach((val)=>{
@@ -93,13 +92,13 @@ const loadCheckou = async (req, res) => {
       }
     })
 
-    console.log(stock, 'stockkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+
 
     if(stock.length > 0){
-        console.log('njana res jssonnnnnnnnnnnnnnnnnnnnn');
+
         res.json(stock)
     }else{
-        console.log('heloooooooooo mann am from stock length');
+
         res.render('user/checkout/checkout', { userData, cart, addressData, subTotal })
     }    
 }
@@ -205,7 +204,7 @@ const placeOrder = async(req, res) => {
      
         userDetails.cart = []
         await userDetails.save()
-        console.log(userDetails.cart);
+
       }
 
 
@@ -221,7 +220,7 @@ const placeOrder = async(req, res) => {
             paymentMethod: payMethod,
           };
   
-          console.log(orderDetails);
+
 
           res.json({ 
             CODsucess : true,
@@ -281,7 +280,7 @@ const placeOrder = async(req, res) => {
                 paymentMethod: payMethod,
               };
 
-            console.log(newWallet)
+
 
              
            await User.findByIdAndUpdate(userId, { $set:{ wallet:newWallet }},  { new : true })

@@ -35,10 +35,10 @@ const submitMailPostProfile=async(req,res)=>{
         const user=req.session.user;
         const userMail=user.email
         const userData=await User.findOne({email:userMail}).lean()
-        console.log(userData)
+
         if(userData){
             otp=await userHelper.verifyEmail(userMail)
-            console.log(otp)
+
             res.redirect('/profileOtp')
         }else{
             req.session.mailError=true
@@ -58,7 +58,7 @@ const forgotOtppageProfile=async(req,res)=>{
         let otpErr = 'Incorrect otp..!!';
 
         if (req.session.otpErr) {
-            console.log("OTP Error:", req.session.otpErr); // Debugging statement
+
             res.render('user/userResetPassword/submitOtp', { otpErr , userData});
         } else {
             res.render('user/userResetPassword/submitOtp',{ userData});
@@ -70,8 +70,8 @@ const forgotOtppageProfile=async(req,res)=>{
 const forgotOtpSubmitProfile=async(req,res)=>{
     let enteredOtp = req.body.otp;
 
-    console.log("Entered OTP:", enteredOtp); // Debugging statement
-    console.log("Stored OTP:", otp); // Debugging statement
+
+
 
     if (enteredOtp === otp) {
         res.json({ success: true, redirectUrl: '/profileResetPassword' });

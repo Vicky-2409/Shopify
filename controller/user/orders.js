@@ -124,7 +124,7 @@ const filterOrders = async (req, res) => {
         return { ...order.toObject(), date: formattedDate }
     })
 
-    console.log(formattedOrders);
+
 
     res.json(formattedOrders)
 
@@ -149,7 +149,7 @@ const filterOrders = async (req, res) => {
 
         const address        = await Address.findById(addressId).lean()
 
-        console.log(myOrderDetails)       
+     
         res.render('user/order_Details', { myOrderDetails, orderedProDet, userData, address ,formattedDate})
     } catch (error) {
         console.log(error);
@@ -163,7 +163,7 @@ const filterOrders = async (req, res) => {
     try {
       const userData = req.session.user
       const orderId = req.query.orderID
-      console.log(orderId)
+
       const myOrderDetails = await Orders.findOne({ orderId: orderId }).lean();
       const orderedProDet  = myOrderDetails.product
       const addressId      = myOrderDetails.address
@@ -255,11 +255,11 @@ const filterOrders = async (req, res) => {
  const returnMsg = async (req, res) => {
   try {
     let orderId = req.query.id
-    console.log("aAAIYYDDDDDDDD", orderId)
+
     await Orders.findByIdAndUpdate(orderId, { $set: { returnMsg: req.body.message } })
 
     let ord = await Orders.find({_id:orderId}).lean()
-    console.log(ord)
+
   } catch (error) {
     console.log(error);
   }
@@ -292,7 +292,7 @@ const filterOrders = async (req, res) => {
       tax: product.tax,
       price: product.price,
     }));
-    console.log(products)
+
 
 
     const date = moment(order.date).format('MMMM D, YYYY');
@@ -332,7 +332,7 @@ const filterOrders = async (req, res) => {
 
       information: {
         // Invoice number
-        number: "2021.0001",
+        number: `${orderId}`,
         // Invoice data
         date: date,
         // Invoice due date
@@ -358,7 +358,6 @@ easyinvoice.createInvoice(data, function (result) {
     res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
     res.send(pdfBuffer);
   })
-  console.log('PDF base64 string: ');
 });
 } 
    

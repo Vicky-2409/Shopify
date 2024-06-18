@@ -25,7 +25,7 @@ endDateField.addEventListener("change", function () {
 const getSalesData = async() => {
 const startDate = document.getElementById('start-date').value
 const endDate =document.getElementById('end-date').value
- console.log(startDate, endDate) 
+
 
 
 
@@ -137,10 +137,10 @@ function renderSalesReport(data) {
  })
 
    const data = await response.json() 
-   console.log(data)
+
 
    if (data) {
-    console.log(data.orders);
+
     
     renderSalesReport(data);
   }

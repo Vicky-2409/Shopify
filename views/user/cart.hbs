@@ -215,7 +215,7 @@
 	const proId = document.getElementById('product_id'+idd).value
 	const cartId = document.getElementsByName('cart_id')[0].value
 
-	console.log(proId, 'pro iddddddddddddd', cartId , 'cart idddddddddddd')
+
 
 	const id = {proId : proId, cartId : cartId}
 
@@ -248,16 +248,16 @@
     })
 
 	const data = await response.json()
-	console.log(data)
+
 	swal.fire("Item Removed from cart!", "", "success")
-    console.log("I have reached Here")
+
     document.getElementById('row'+proId).innerHTML = ''	   
 		}
 
 
 
 		const addToWishlist = async (id) => {
-		console.log('helooooooooooo from add to wishlist')		
+	
 		let response = await fetch(`/add_to_wishlist?id=${id}`,{
 				headers : {
 					"Content-Type":"application/json"
@@ -265,7 +265,7 @@
 			})
 
 			let data = await response.json()
-			console.log(data)
+
 			if(data.message == 'Added'){
 				Swal.fire("AwwW 🥳!", "Item added to Wishlist!", "success");
 			}else{
@@ -276,7 +276,7 @@
 
 	const proceedToCheckout = async () => {
 
-		console.log('helooo from proceed to checkout...')
+
 		const response = await fetch ('/check_stock', {
            headers : {
 					"Content-Type":"application/json"
@@ -288,7 +288,7 @@
 		if(data == 'ok'){
 		   window.location.href = '/checkout'
 		}else{
-           console.log(data)	
+
 		   data.forEach((pro) => {
 			alertify.set('notifier', 'position', 'bottom-center');
             alertify.success(`${pro.name} out of stock..!!`)

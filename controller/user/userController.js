@@ -31,7 +31,7 @@ const loadHome = async(req, res)=>{
     const loadProData = await Product.find({is_blocked: false}).limit(8).lean()
     const loadCatData = await Category.find({isListed:true}).lean()
     const banners     = await Banners.find().lean()
-    console.log(banners)
+
 
     const user = req.session.user
     let  userData = user
@@ -153,7 +153,7 @@ const ProductView = async(req, res)=>{
 
     const reviews = await Review.find({productId: proId}).lean()
 
-        console.log(reviews)
+
         let reviewExist = true
         if(reviews.length == 0){
             reviewExist = false
@@ -172,14 +172,14 @@ const ProductView = async(req, res)=>{
         for(let i of Orders){
             
             for(let j of i.product){
-                console.log(j.name)
+
                 if(j.name == proData.name){
-                    console.log("I found " , j.name)
+
                     userCanReview = true
                 }
             }
         }
-        console.log(userCanReview)
+
 
 
     }
@@ -213,7 +213,7 @@ const addNewReviewPost = async(req, res) => {
         })
 
         const reviewData = await review.save()
-        console.log(reviewData)
+
         res.redirect(`/productview?id=${req.body.proId}`)
        
     } catch (error) {
@@ -280,7 +280,7 @@ const googleCallback =  async (req, res) => {
         { $set: { name: req.user.displayName,isVerified:true,isBlocked:false } },
         { upsert: true,new :true }
       );
-      console.log(userData)
+
   
       // Set the user session
        req.session.LoggedIn = true
@@ -364,9 +364,7 @@ const doLogin = async(req, res)=>{
        let password = req.body.password
 
        userData = await User.findOne({ email: email });
-       console.log(userData.password)
-       console.log(email)
-       console.log(password)
+
 
        if(userData){
           if (await argon2.verify(userData.password, password)){ 
@@ -446,7 +444,7 @@ const doSignup = async(req, res)=>{
 const productSearch = async(req, res)=>{
     const { search, catId } = req.body
 
-    console.log(search, catId);
+
 
     if(catId){   
 
@@ -464,7 +462,7 @@ const productSearch = async(req, res)=>{
         try {
             const products = await Product.find({ name: { $regex: search, $options: 'i' } })
             .populate('category', 'category');
-            console.log(products);
+
 
             res.json(products);
           } catch (error) {
@@ -479,7 +477,7 @@ const productSearch = async(req, res)=>{
     const sortProductByName = async (req, res) => {
         try {
             const { sort, catId, page } = req.body;
-            console.log('Sort:', sort); // Log sort order
+
             const limit = 6;
             const skip = (page - 1) * limit;
     
@@ -512,7 +510,7 @@ const productSearch = async(req, res)=>{
     const sortProductByPrice = async (req, res) => {
         try {
             const { sort, catId, page } = req.body;
-            console.log(sort, catId, page); // Log sort order
+
             const limit = 6;
             const skip = (page - 1) * limit;
     

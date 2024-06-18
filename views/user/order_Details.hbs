@@ -277,7 +277,6 @@
 
 
   const orderId = document.getElementsByName('order_id')[0].value
-  console.log(orderId)
 
   const status = () => {
         Swal.fire({
@@ -357,18 +356,16 @@ const status2 = () => {
     if (document.getElementById('coupon') && document.getElementsByName('amount_after_discount')[0]) {
       const amountAfterDiscount = Number(document.getElementsByName('amount_after_discount')[0].value);
       updatedWallet = wallet + amountAfterDiscount - 50;
-      console.log('Coupon applied. Amount after discount:', amountAfterDiscount);
+
     } else {
       // If no coupon, calculate updatedWallet with total amount
       const total = Number(document.getElementsByName('total')[0].value);
       updatedWallet = wallet + total;
     }
 
-    console.log('Updated Wallet:', updatedWallet, 'Original Wallet:', wallet);
 
     // Retrieve the payment method
     const payMethod = document.getElementsByName('pay-method')[0].value;
-    console.log('Payment Method:', payMethod);
 
     // Make the request to update the order status
     const response = await fetch(`/${status}_order?id=${id}`, {
@@ -382,7 +379,6 @@ const status2 = () => {
 
     // Parse the JSON response
     const data = await response.json();
-    console.log('Response Data:', data);
 
     // Update the UI based on the response
     if (data) {

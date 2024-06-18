@@ -33,7 +33,7 @@ let catId = false;
 const categoryFilter = async (id, page = 1) => {
     
     catId = document.getElementById('cat_id' + id).value;
-    console.log(catId, 'am cat idddd');
+
 
     const response = await fetch(`/category_fil`, {
         method: 'POST',
@@ -45,7 +45,7 @@ const categoryFilter = async (id, page = 1) => {
     });
 
     const data = await response.json();
-    console.log(data);
+
 
     if (data.productData.length > 0) {
         filteredDataDisplay(data.productData);
@@ -80,7 +80,7 @@ const getProductsPage = async (page, catId = '', sort = '') => {
 
 const sortLowToHigh = async (page = 1) => {
     const sort = 1;
-    console.log('Sort:', sort);
+
     const response = await fetch(`/sort_product_price`, {
         method: 'POST',
         headers: {
@@ -108,7 +108,6 @@ const sortLowToHigh = async (page = 1) => {
 
 const sortHighToLow = async (page = 1) => {
     const sort = -1;
-    console.log('Sort:', sort);
     const response = await fetch(`/sort_product_price`, {
         method: 'POST',
         headers: {
@@ -313,7 +312,6 @@ const addToWishlist = async (id) => {
     })
 
     let data = await response.json()
-    console.log(data)
     if (data) {
         alertify.set('notifier', 'position', 'bottom-center');
         alertify.success(`${proName} Added to wishlist`)
@@ -338,7 +336,6 @@ const removeFromWishlist = async (id) => {
     })
 
     let data = await response.json()
-    console.log(data)
     if (data) {
         alertify.set('notifier', 'position', 'bottom-center');
         alertify.success(`${proName} Removed from wishlist`)
@@ -351,7 +348,6 @@ const removeFromWishlist = async (id) => {
 
 const searchProducts = async () => {
     const query = document.getElementsByName('search-product')[0].value
-    console.log('I am from search', query);
 
     const response = await fetch(`/products_filter`, {
         method: 'POST',
@@ -365,7 +361,6 @@ const searchProducts = async () => {
     });
 
     const data = await response.json();
-    console.log(data.length, data)
 
 
 
@@ -381,7 +376,6 @@ const searchProducts = async () => {
 
 const sortAZ = async (page = 1) => {
     const sort = 'asc';
-    console.log('Sort:', sort);
     const response = await fetch(`/sort_product_name`, {
         method: 'POST',
         headers: {
@@ -406,7 +400,6 @@ const sortAZ = async (page = 1) => {
 
 const sortZA = async (page = 1) => {
     const sort = 'desc';
-    console.log('Sort:', sort);
     const response = await fetch(`/sort_product_name`, {
         method: 'POST',
         headers: {
