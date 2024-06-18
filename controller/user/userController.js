@@ -23,254 +23,78 @@ let message2
 
 //To load home
 
-// const loadHome = async(req, res)=>{
+const loadHome = async(req, res)=>{
 
 
    
-//    try {
-//     const loadProData = await Product.find({is_blocked: false}).limit(8).lean()
-//     const loadCatData = await Category.find({isListed:true}).lean()
-//     const banners     = await Banners.find().lean()
+   try {
+    const loadProData = await Product.find({is_blocked: false}).limit(8).lean()
+    const loadCatData = await Category.find({isListed:true}).lean()
+    const banners     = await Banners.find().lean()
 
 
-//     const user = req.session.user
-//     let  userData = user
-//     if(user){
-//         const userId = user._id
-//         userData = await User.findById(userId).lean()
-//     }
-
-
-
-
-//     res.render('user/home',{userData, loadProData, loadCatData, banners})
-    
-//    } catch (error) {
-//     console.log(error);
-//    }
-// }
-
-
-const loadHome = async (req, res) => {
-  try {
-    // Fetch products that are not blocked
-    const loadProData = await Product.aggregate([
-      {
-        $match: { is_blocked: false }
-      },
-      {
-        $limit: 8
-      },
-      {
-        $project: {
-          _id: 1,
-          name: 1,
-          price: 1,
-          imageUrl: 1
-        }
-      }
-    ]);
-
-    // Fetch categories that are listed
-    const loadCatData = await Category.aggregate([
-      {
-        $match: { isListed: true }
-      },
-      {
-        $project: { _id: 1, category: 1 }
-      }
-    ]);
-
-    // Fetch all banners
-    const banners = await Banners.aggregate([
-      {
-        $project: {
-          _id: 1,
-          title: 1,
-          image: 1
-        }
-      }
-    ]);
-
-    // Fetch user data if session user exists
-    const userId = req.session.user?._id;
-    let userData = req.session.user;
-    if (userId) {
-      userData = await User.findById(userId).lean();
+    const user = req.session.user
+    let  userData = user
+    if(user){
+        const userId = user._id
+        userData = await User.findById(userId).lean()
     }
 
-    res.render('user/home', {
-      userData,
-      loadProData,
-      loadCatData,
-      banners
-    });
 
-  } catch (error) {
+
+
+    res.render('user/home',{userData, loadProData, loadCatData, banners})
+    
+   } catch (error) {
     console.log(error);
-    // Handle error appropriately
-    res.status(500).send("Internal Server Error");
-  }
-};
-
+   }
+}
 
 //All product page
 
 
-// const getProduct = async (req, res) => {
-
-
-//     try {
-//         let page = 1; // Initial page is always 1 for the GET request
-//         const limit = 6;
-//         const loadCatData = await Category.find({isListed:true}).lean();
-//         const proData = await Product.find({ is_blocked: false })
-//             .skip((page - 1) * limit)
-//             .limit(limit)
-//             .populate('category', 'category')
-//             .lean();
-//         const newProduct = await Product.find({is_blocked: false})
-//             .sort({_id:-1})
-//             .limit(3)
-//             .lean();
-//         const count = await Product.countDocuments({ is_blocked: false });
-//         const totalPages = Math.ceil(count / limit);
-//         const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
-//         const user = req.session.user
-//         let  userData = user
-//         if(user){
-//             const userId = user._id
-//             userData = await User.findById(userId).lean()
-//         }
-
-//         res.render('user/products', {
-//             proData,
-//             newProduct,
-//             pages,
-//             currentPage: page,
-//             userData,
-//             loadCatData,
-//             currentFunction: 'getProductsPage',
-//             count
-            
-//         });
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
-
 const getProduct = async (req, res) => {
+
+
     try {
-      let page = 1; // Initial page is always 1 for the GET request
-      const limit = 6;
-  
-      // Fetch categories that are listed
-      const loadCatData = await Category.aggregate([
-        {
-          $match: { isListed: true }
-        },
-        {
-          $project: { _id: 1, category: 1 }
+        let page = 1; // Initial page is always 1 for the GET request
+        const limit = 6;
+        const loadCatData = await Category.find({isListed:true}).lean();
+        const proData = await Product.find({ is_blocked: false })
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .populate('category', 'category')
+            .lean();
+        const newProduct = await Product.find({is_blocked: false})
+            .sort({_id:-1})
+            .limit(3)
+            .lean();
+        const count = await Product.countDocuments({ is_blocked: false });
+        const totalPages = Math.ceil(count / limit);
+        const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+        const user = req.session.user
+        let  userData = user
+        if(user){
+            const userId = user._id
+            userData = await User.findById(userId).lean()
         }
-      ]);
-  
-      // Fetch products with category information and pagination
-      const proData = await Product.aggregate([
-        {
-          $match: { is_blocked: false }
-        },
-        {
-          $skip: (page - 1) * limit
-        },
-        {
-          $limit: limit
-        },
-        {
-          $lookup: {
-            from: "categories",
-            localField: "category",
-            foreignField: "_id",
-            as: "category"
-          }
-        },
-        {
-          $unwind: "$category"
-        },
-        {
-          $project: {
-            _id: 1,
-            name: 1,
-            price: 1,
-            imageUrl: 1,
-            category: "$category.category"
-          }
-        }
-      ]);
-  
-      // Fetch newest products
-      const newProduct = await Product.aggregate([
-        {
-          $match: { is_blocked: false }
-        },
-        {
-          $sort: { _id: -1 }
-        },
-        {
-          $limit: 3
-        },
-        {
-          $lookup: {
-            from: "categories",
-            localField: "category",
-            foreignField: "_id",
-            as: "category"
-          }
-        },
-        {
-          $unwind: "$category"
-        },
-        {
-          $project: {
-            _id: 1,
-            name: 1,
-            price: 1,
-            imageUrl: 1,
-            category: "$category.category"
-          }
-        }
-      ]);
-  
-      // Count total number of products for pagination
-      const count = await Product.countDocuments({ is_blocked: false });
-      const totalPages = Math.ceil(count / limit);
-      const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  
-      // Fetch user data if session user exists
-      const userId = req.session.user?._id;
-      let userData = req.session.user;
-      if (userId) {
-        userData = await User.findById(userId).lean();
-      }
-  
-      res.render('user/products', {
-        proData,
-        newProduct,
-        pages,
-        currentPage: page,
-        userData,
-        loadCatData,
-        currentFunction: 'getProductsPage',
-        count
-      });
-  
+
+        res.render('user/products', {
+            proData,
+            newProduct,
+            pages,
+            currentPage: page,
+            userData,
+            loadCatData,
+            currentFunction: 'getProductsPage',
+            count
+            
+        });
     } catch (error) {
-      console.log(error);
-      // Handle error appropriately
-      res.status(500).send("Internal Server Error");
+        console.log(error);
     }
-  };
-  
+};
 
 const getProductsPage = async (req, res) => {
 
@@ -653,7 +477,6 @@ const productSearch = async(req, res)=>{
     const sortProductByName = async (req, res) => {
         try {
             const { sort, catId, page } = req.body;
-
             const limit = 6;
             const skip = (page - 1) * limit;
     
