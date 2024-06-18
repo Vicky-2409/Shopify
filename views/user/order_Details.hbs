@@ -18,6 +18,10 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assetsAdmin/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/assetsAdmin/css/main.css" rel="stylesheet" type="text/css" />
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -207,7 +211,7 @@
                                                                         <dl class="dlist">
                                                                             <dt class="text-muted">Status:</dt>
                                                                             <dd>
-                                                                                <span
+                                                                                <span id="order_status"
                                                                                     class="badge rounded-pill alert-success text-success">{{myOrderDetails.status}}</span>
                                                                             </dd>
                                                                         </dl>
@@ -317,6 +321,7 @@ const status2 = () => {
                         showCancelButton: true
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            Swal.fire('Submitted!', 'Your message has been sent.', 'success');
                             const message = result.value;
                             fetch(`/return_msg?id=${orderId}`, {
                                 method: 'POST',
@@ -329,9 +334,7 @@ const status2 = () => {
                             .then(data => {
                                 Swal.fire('Submitted!', 'Your message has been sent.', 'success');
                             })
-                            .catch((error) => {
-                                Swal.fire('Error!', 'There was a problem sending your message.', 'error');
-                            });
+
                         } else {
                             Swal.fire("Your return process was canceled!");
                         }
@@ -383,9 +386,10 @@ const status2 = () => {
 
     // Update the UI based on the response
     if (data) {
+      document.getElementById('order_status').innerText =  `${status2}`;
       document.getElementById('cancel_btn').innerHTML = '';
       document.getElementById('return_btn').innerHTML = '';
-      document.getElementById('order_status').innerText = `${status2}`;
+
       Swal.fire({
         title:'Your order has been canceled!',
         icon: 'success',

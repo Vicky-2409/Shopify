@@ -69,8 +69,11 @@ const salesReportTemplate = `
               <td>
                  {{#each this.proName}}
                  <p>Name: {{this.name}}</p>
+      
                  <p>Quantity: {{this.quantity}}</p>
+                 
                  <p>Price: <span>₹</span>{{this.price}}</p>
+                <br>
                  {{/each}}
                  </td> 
             
@@ -95,19 +98,39 @@ const salesReportTemplate = `
 function renderSalesReport(data) {
   const compiledTemplate = Handlebars.compile(salesReportTemplate);
   const salesReportHTML = compiledTemplate({ data: data });
-  document.getElementById('table').innerHTML = salesReportHTML
+  document.getElementById('table').innerHTML = salesReportHTML;
 
-  $(document).ready( function () {
-    $('#my-table').DataTable({
-      dom: 'Bfrtip',
+  // DataTable initialization with PDF customization
+  $(document).ready(function () {
+      $('#my-table').DataTable({
+          dom: 'Bfrtip',
           buttons: [
-              'excelHtml5',
-              'pdfHtml5'
-      ]
-    });
-  } );
-}
+              {
+                  extend: 'excelHtml5',
+                  title: 'Sales Report'
+              },
+              {
+                  extend: 'pdfHtml5',
+                  title: 'Sales Report',
+                  customize: function (doc) {
+                      // Adjust header styling and row alignment
+                      doc.content[1].table.headerRows = 1;
+                      doc.content[1].table.widths = ['15%', '15%', '20%', '32%', '15%'];
 
+                      // Adjust cell alignment for each row
+                      doc.content[1].table.body.forEach(function (row) {
+                          row.forEach(function (cell, index) {
+                              if (index === 3) {
+                                  cell.alignment = 'left';
+                              }
+                          });
+                      });
+                  }
+              }
+          ]
+      });
+  });
+}
 
  const response = await fetch(`/admin/get_sales?stDate=${startDate}&edDate=${endDate}`, {
     headers: { 'Content-Type': "application/json" },
@@ -122,27 +145,3 @@ function renderSalesReport(data) {
     renderSalesReport(data);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

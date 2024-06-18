@@ -87,32 +87,21 @@
                                 <tr>
                                     
 
-                                    <th>Product</th>
-                                    <th>Name</th>
-                                    <th>Comment</th>
-                                    <th>Date</th>
-                                    <th class="text-end">Action</th>
+                                    <th  class="text-center">Product</th>
+                                    <th  class="text-center">User Name</th>
+                                    <th  class="text-center">Review</th>
+                                    <th  class="text-center">Date</th>
+                                
                                 </tr>
                             </thead>
                             <tbody>
                                 {{#each reviews}}
                                 <tr>
                                     
-                                    <td><b>{{this.productDetails.name}}</b></td>
-                                    <td>{{this.name}}</td>
-                                    <td>{{this.comment}}</td>
-                                    <td>{{formatDate this.createdAt "DD MMMM YYYY"}}</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-md rounded font-sm">Detail</a>
-                                        <div class="dropdown">
-                                            <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">View detail</a>
-                                                <a class="dropdown-item" href="#">Edit info</a>
-                                                <a class="dropdown-item text-danger" href="#">Delete</a>
-                                            </div>
-                                        </div> <!-- dropdown //end -->
-                                    </td>
+                                    <td  class="text-center"> <b>{{this.productDetails.name}}</b></td>
+                                    <td  class="text-center">{{this.name}}</td>
+                                    <td  class="text-center">{{this.comment}}</td>
+                                    <td  class="text-center">{{formatDate this.createdAt "DD MMMM YYYY"}}</td>
                                 </tr>
                                 {{/each}}
                             </tbody>
