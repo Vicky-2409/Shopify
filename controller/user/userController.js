@@ -23,32 +23,96 @@ let message2
 
 //To load home
 
-const loadHome = async(req, res)=>{
+// const loadHome = async(req, res)=>{
 
 
    
-   try {
-    const loadProData = await Product.find({is_blocked: false}).limit(8).lean()
-    const loadCatData = await Category.find({isListed:true}).lean()
-    const banners     = await Banners.find().lean()
+//    try {
+//     const loadProData = await Product.find({is_blocked: false}).limit(8).lean()
+//     const loadCatData = await Category.find({isListed:true}).lean()
+//     const banners     = await Banners.find().lean()
 
 
-    const user = req.session.user
-    let  userData = user
-    if(user){
-        const userId = user._id
-        userData = await User.findById(userId).lean()
+//     const user = req.session.user
+//     let  userData = user
+//     if(user){
+//         const userId = user._id
+//         userData = await User.findById(userId).lean()
+//     }
+
+
+
+
+//     res.render('user/home',{userData, loadProData, loadCatData, banners})
+    
+//    } catch (error) {
+//     console.log(error);
+//    }
+// }
+
+
+const loadHome = async (req, res) => {
+  try {
+    // Fetch products that are not blocked
+    const loadProData = await Product.aggregate([
+      {
+        $match: { is_blocked: false }
+      },
+      {
+        $limit: 8
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          price: 1,
+          imageUrl: 1
+        }
+      }
+    ]);
+
+    // Fetch categories that are listed
+    const loadCatData = await Category.aggregate([
+      {
+        $match: { isListed: true }
+      },
+      {
+        $project: { _id: 1, category: 1 }
+      }
+    ]);
+
+    // Fetch all banners
+    const banners = await Banners.aggregate([
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          imageUrl: 1
+        }
+      }
+    ]);
+
+    // Fetch user data if session user exists
+    const userId = req.session.user?._id;
+    let userData = req.session.user;
+    if (userId) {
+      userData = await User.findById(userId).lean();
     }
 
+    res.render('user/home', {
+      userData,
+      loadProData,
+      loadCatData,
+      banners
+    });
 
-
-
-    res.render('user/home',{userData, loadProData, loadCatData, banners})
-    
-   } catch (error) {
+  } catch (error) {
     console.log(error);
-   }
-}
+    // Handle error appropriately
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 
 //All product page
 
