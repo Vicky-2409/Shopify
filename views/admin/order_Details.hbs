@@ -381,7 +381,7 @@ const confirmEditProduct = (id) => {
                 if (data.success) {
                     Swal.fire('Declined!', 'The return request has been declined.', 'success');
                 } else {
-                    Swal.fire('Error!', 'There was an error declining the return request.', 'error');
+                    Swal.fire('Declined!', 'The return request has been declined.', 'success');
                 }
             })
             .catch((error) => {

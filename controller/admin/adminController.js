@@ -131,6 +131,9 @@ const getCategory = async (req, res) => {
       .skip((page - 1) * limit)
       .limit(limit * 1)
       .lean();
+    console.log(allCtegoryData)
+
+    let product = await Product.find({_id:"664f4b28b8633b9fbc2a2c9a"}).count
 
     const count = await Category.find({}).count();
     const totalPages = Math.ceil(count / limit)
