@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  mongo-db:
+    container_name: database_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"  # MongoDB port mapping
+    volumes:
+      - mongo-db:/data/db
+
+  app:
+    container_name: newproject-app
+    image: svignesh2409/my_project:1.0
+    ports:
+      - 3000:3000
+    environment:
+      - CLIENT_ID=1036636309062-ni5t81i4cureuhlqi783f2nibs7qfom1.apps.googleusercontent.com
+      - CLIENT_SECRET=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
+      - ADMIN_EMAIL=admin@gmail.com
+      - ADMIN_PASSWORD=Admin@123
+      - USER_EMAIL=svignesh2409@gmail.com
+      - USER_PASSWORD=lbhp bqvp dsmc fpoo
+      - PORT=3000
+      - RAZORPAY_ID=rzp_test_Wsp2NzIUWHF2Cm
+      - RAZORPAY_SECRET=bhtVpaw0zDw5uCY9ybVGEYRE
+      - MONGODB=mongodb://mongo-db:27017/Project_Ecommerce 
+      - SECRETKEY=secret
+    depends_on:
+      - mongo-db
+
+volumes:
+  mongo-db: {}

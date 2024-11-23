@@ -21,7 +21,7 @@ const loadCheckout = async (req, res) => {
     const cart       = userDataa.cart
 
 
-    let subTotal = 50
+    let subTotal = 0
     cart.forEach((val)=>{
     val.total = val.product.price * val.quantity
     subTotal += val.total
@@ -331,7 +331,7 @@ const validateCoupon = async (req, res) => {
                 if (discountAmt > coupon.maxDiscount) {
                     discountAmt = coupon.maxDiscount;
                 }
-                const newTotal = subTotal - discountAmt;
+                const newTotal = subTotal - discountAmt + 50;
 
                 const user = User.findById(userId);
 

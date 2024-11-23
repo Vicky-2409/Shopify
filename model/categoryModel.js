@@ -17,10 +17,7 @@ const categorySchema = new mongoose.Schema({
         default:true
     },
 
-    bestSelling:{
-        type:Number,
-        default:0
-    }
+ 
 },{
     timestamps: true
 })

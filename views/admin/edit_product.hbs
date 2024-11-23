@@ -184,10 +184,13 @@
                                 <div class="col-lg-4">
                                     <label class="form-label">Category:</label>
                                     <select name="category" id="category" class="form-select">
-                                        {{#each catogories}}
-                                        <option value="{{this._id}}">{{this.category}}</option>
-                                        {{/each}}
+    {{#each catogories}}
+        <option value="{{this._id}}" {{#if (eq this.category ../proData.category.category)}}selected{{/if}}>
+            {{this.category}}
+        </option>
+    {{/each}}
                                     </select>
+
                                 </div>
 
 

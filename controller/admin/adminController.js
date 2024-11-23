@@ -133,7 +133,6 @@ const getCategory = async (req, res) => {
       .lean();
     console.log(allCtegoryData)
 
-    let product = await Product.find({_id:"664f4b28b8633b9fbc2a2c9a"}).count
 
     const count = await Category.find({}).count();
     const totalPages = Math.ceil(count / limit)
@@ -419,7 +418,7 @@ const editProduct = async (req, res) => {
   try {
     let proId = req.params.id;
     
-    const proData = await Product.findById({ _id: proId }).lean()
+    const proData = await Product.findById({ _id: proId }).populate('category', 'category').lean()
     const catogories = await Category.find().lean()
 
     res.render("admin/edit_product", { proData, catogories, layout:'adminlayout' })
